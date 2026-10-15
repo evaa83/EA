@@ -1,0 +1,3698 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Emotional Agility (EA) 引導工具倉庫 & 挑選規劃器</title>
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700&family=Outfit:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    
+    <style>
+        :root {
+            --bg-primary: #f8fafc;
+            --bg-secondary: #ffffff;
+            --bg-card: rgba(255, 255, 255, 0.85);
+            --border-color: rgba(226, 232, 240, 0.8);
+            --border-hover: rgba(124, 58, 237, 0.35);
+            --text-primary: #0f172a;
+            --text-secondary: #475569;
+            --text-muted: #94a3b8;
+            --primary: #7c3aed;
+            --primary-hover: #6d28d9;
+            --primary-glow: rgba(124, 58, 237, 0.15);
+            --secondary: #0d9488;
+            --secondary-hover: #0f766e;
+            --accent: #e11d48;
+            --sidebar-width: 280px;
+            --drawer-width: 440px;
+            --transition-speed: 0.3s;
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            font-family: 'Plus Jakarta Sans', 'Outfit', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+            background-color: var(--bg-primary);
+            background-image: 
+                radial-gradient(circle at 10% 20%, rgba(99, 102, 241, 0.08) 0%, transparent 40%),
+                radial-gradient(circle at 90% 80%, rgba(20, 184, 166, 0.08) 0%, transparent 45%);
+            background-attachment: fixed;
+            color: var(--text-primary);
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            overflow-x: hidden;
+        }
+
+        /* Top Header Bar */
+        .top-header {
+            position: sticky;
+            top: 0;
+            width: 100%;
+            height: 64px;
+            background: rgba(255, 255, 255, 0.85);
+            backdrop-filter: blur(15px);
+            border-bottom: 1px solid var(--border-color);
+            display: flex;
+            align-items: center;
+            padding: 0 24px;
+            gap: 16px;
+            z-index: 990;
+        }
+
+        .btn-toggle-sidebar {
+            background: transparent;
+            border: none;
+            cursor: pointer;
+            font-size: 22px;
+            color: var(--text-primary);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            width: 40px;
+            height: 40px;
+            border-radius: 8px;
+            transition: all 0.2s;
+        }
+
+        .btn-toggle-sidebar:hover {
+            background: rgba(124, 58, 237, 0.08);
+            color: var(--primary);
+        }
+
+        .top-header-brand {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .brand-logo-mini {
+            width: 30px;
+            height: 30px;
+            background: linear-gradient(135deg, var(--primary), var(--secondary));
+            border-radius: 8px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 800;
+            font-size: 15px;
+            color: white;
+            box-shadow: 0 4px 10px var(--primary-glow);
+        }
+
+        .brand-name-mini {
+            font-family: 'Outfit', sans-serif;
+            font-size: 18px;
+            font-weight: 700;
+            letter-spacing: 0.5px;
+            background: linear-gradient(to right, #0f172a, var(--primary));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        /* Layout wrapper */
+        .app-container {
+            display: flex;
+            flex: 1;
+            width: 100%;
+            position: relative;
+        }
+
+        /* Sidebar Styling (Collapsible) */
+        aside {
+            width: var(--sidebar-width);
+            background: rgba(255, 255, 255, 0.95);
+            border-right: 1px solid var(--border-color);
+            backdrop-filter: blur(15px);
+            position: fixed;
+            top: 64px;
+            bottom: 0;
+            left: calc(-1 * var(--sidebar-width));
+            z-index: 980;
+            display: flex;
+            flex-direction: column;
+            padding: 24px;
+            transition: transform var(--transition-speed) cubic-bezier(0.4, 0, 0.2, 1);
+            box-shadow: 10px 0 30px rgba(15, 23, 42, 0.03);
+        }
+
+        body.sidebar-open aside {
+            transform: translateX(var(--sidebar-width));
+        }
+
+        .brand {
+            display: none;
+        }
+
+        .nav-section {
+            margin-bottom: 28px;
+        }
+
+        .nav-section-title {
+            font-size: 11px;
+            text-transform: uppercase;
+            letter-spacing: 1.5px;
+            color: var(--text-muted);
+            margin-bottom: 12px;
+            padding-left: 8px;
+            font-weight: 700;
+        }
+
+        .nav-menu {
+            list-style: none;
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+        }
+
+        .nav-item {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            padding: 12px 16px;
+            border-radius: 10px;
+            color: var(--text-secondary);
+            text-decoration: none;
+            font-size: 14px;
+            font-weight: 500;
+            cursor: pointer;
+            transition: all var(--transition-speed);
+            border: 1px solid transparent;
+        }
+
+        .nav-item:hover {
+            color: var(--text-primary);
+            background: rgba(124, 58, 237, 0.04);
+            border-color: rgba(124, 58, 237, 0.08);
+        }
+
+        .nav-item.active {
+            color: var(--primary);
+            background: rgba(124, 58, 237, 0.08);
+            border-color: rgba(124, 58, 237, 0.15);
+            font-weight: 600;
+        }
+
+        .nav-icon {
+            font-size: 18px;
+        }
+
+        /* Sidebar Overlay */
+        .sidebar-overlay {
+            position: fixed;
+            top: 64px;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: rgba(15, 23, 42, 0.25);
+            backdrop-filter: blur(4px);
+            z-index: 979;
+            opacity: 0;
+            pointer-events: none;
+            transition: opacity var(--transition-speed) ease;
+        }
+
+        body.sidebar-open .sidebar-overlay {
+            opacity: 1;
+            pointer-events: auto;
+        }
+
+        /* Main Content Styling */
+        main {
+            flex: 1;
+            padding: 40px;
+            max-width: 1200px;
+            width: 100%;
+            margin: 0 auto;
+            transition: margin-left var(--transition-speed) cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        @media (min-width: 1024px) {
+            aside {
+                left: 0;
+            }
+            main {
+                margin-left: var(--sidebar-width);
+                width: calc(100% - var(--sidebar-width));
+            }
+            body.sidebar-collapsed aside {
+                transform: translateX(calc(-1 * var(--sidebar-width)));
+            }
+            body.sidebar-collapsed main {
+                margin-left: 0;
+                width: 100%;
+            }
+            .sidebar-overlay {
+                display: none;
+            }
+        }
+
+        header {
+            margin-bottom: 40px;
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+        }
+
+        .header-left h1 {
+            font-family: 'Outfit', sans-serif;
+            font-size: 32px;
+            font-weight: 800;
+            margin-bottom: 8px;
+            background: linear-gradient(135deg, #0f172a, var(--primary));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .header-left p {
+            color: var(--text-secondary);
+            font-size: 15px;
+        }
+
+        .header-right {
+            display: flex;
+            gap: 12px;
+        }
+
+        /* Quick Templates */
+        .template-dropdown {
+            position: relative;
+            display: inline-block;
+        }
+
+        .btn-secondary {
+            background: #ffffff;
+            border: 1px solid var(--border-color);
+            color: var(--text-secondary);
+            padding: 10px 18px;
+            border-radius: 8px;
+            font-weight: 600;
+            font-size: 13px;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            transition: all var(--transition-speed);
+            box-shadow: 0 2px 4px rgba(148, 163, 184, 0.05);
+        }
+
+        .btn-secondary:hover {
+            background: rgba(248, 250, 252, 0.8);
+            border-color: var(--border-hover);
+            color: var(--text-primary);
+        }
+
+        .dropdown-menu {
+            position: absolute;
+            right: 0;
+            top: calc(100% + 8px);
+            background: #ffffff;
+            border: 1px solid var(--border-color);
+            border-radius: 12px;
+            width: 280px;
+            display: none;
+            flex-direction: column;
+            z-index: 200;
+            box-shadow: 0 10px 30px rgba(15, 23, 42, 0.08);
+            overflow: hidden;
+        }
+
+        .dropdown-item {
+            padding: 14px 18px;
+            font-size: 13px;
+            color: var(--text-secondary);
+            cursor: pointer;
+            text-align: left;
+            border: none;
+            background: transparent;
+            width: 100%;
+            transition: all 0.2s;
+            border-bottom: 1px solid rgba(226, 232, 240, 0.5);
+        }
+
+        .dropdown-item:last-child {
+            border-bottom: none;
+        }
+
+        .dropdown-item:hover {
+            background: rgba(124, 58, 237, 0.04);
+            color: var(--primary);
+        }
+
+        .dropdown-item-desc {
+            font-size: 11px;
+            color: var(--text-muted);
+            margin-top: 4px;
+            line-height: 1.4;
+        }
+
+        /* Tab Contents */
+        .tab-content {
+            display: none;
+            animation: fadeIn 0.4s ease-out forwards;
+        }
+
+        .tab-content.active {
+            display: block;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        /* Day Selector Pills */
+        .day-pills {
+            display: flex;
+            gap: 10px;
+            margin-bottom: 30px;
+            border-bottom: 1px solid var(--border-color);
+            padding-bottom: 16px;
+            overflow-x: auto;
+        }
+
+        .day-pill {
+            background: #ffffff;
+            border: 1px solid var(--border-color);
+            color: var(--text-secondary);
+            padding: 10px 20px;
+            border-radius: 30px;
+            font-size: 14px;
+            font-weight: 600;
+            cursor: pointer;
+            white-space: nowrap;
+            transition: all var(--transition-speed);
+            box-shadow: 0 2px 4px rgba(148, 163, 184, 0.03);
+        }
+
+        .day-pill:hover {
+            border-color: var(--border-hover);
+            color: var(--text-primary);
+        }
+
+        .day-pill.active {
+            background: var(--primary);
+            color: white;
+            border-color: var(--primary);
+            box-shadow: 0 4px 15px var(--primary-glow);
+        }
+
+        .day-overview-card {
+            background: #ffffff;
+            border: 1px solid var(--border-color);
+            border-radius: 16px;
+            padding: 24px;
+            margin-bottom: 30px;
+            box-shadow: 0 4px 20px -2px rgba(148, 163, 184, 0.05);
+        }
+
+        .day-overview-tag {
+            display: inline-block;
+            font-size: 11px;
+            text-transform: uppercase;
+            font-weight: 700;
+            color: var(--secondary);
+            letter-spacing: 1px;
+            margin-bottom: 8px;
+        }
+
+        .day-overview-title {
+            font-family: 'Outfit', sans-serif;
+            font-size: 22px;
+            font-weight: 700;
+            margin-bottom: 12px;
+            color: var(--text-primary);
+        }
+
+        .day-overview-text {
+            color: var(--text-secondary);
+            font-size: 14px;
+            line-height: 1.6;
+        }
+
+        /* Tool Cards Grid */
+        .tools-grid {
+            display: flex;
+            flex-direction: column;
+            gap: 24px;
+        }
+
+        .tool-card {
+            background: var(--bg-card);
+            border: 1px solid var(--border-color);
+            border-radius: 16px;
+            padding: 28px;
+            position: relative;
+            transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+            backdrop-filter: blur(10px);
+            box-shadow: 0 10px 30px -10px rgba(148, 163, 184, 0.12), 0 1px 3px rgba(148, 163, 184, 0.02);
+        }
+
+        .tool-card:hover {
+            border-color: var(--border-hover);
+            transform: translateY(-2px);
+            box-shadow: 0 20px 40px -15px rgba(124, 58, 237, 0.12);
+        }
+
+        .tool-card-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+            margin-bottom: 20px;
+            gap: 16px;
+        }
+
+        .tool-title-wrap {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .tool-badge {
+            background: rgba(124, 58, 237, 0.08);
+            color: var(--primary);
+            border: 1px solid rgba(124, 58, 237, 0.12);
+            font-size: 12px;
+            font-weight: 700;
+            padding: 4px 10px;
+            border-radius: 6px;
+            white-space: nowrap;
+        }
+
+        .tool-name {
+            font-family: 'Outfit', sans-serif;
+            font-size: 19px;
+            font-weight: 700;
+            color: var(--text-primary);
+        }
+
+        .tool-type {
+            font-size: 12px;
+            color: var(--secondary);
+            background: rgba(20, 184, 166, 0.08);
+            border: 1px solid rgba(20, 184, 166, 0.12);
+            padding: 4px 10px;
+            border-radius: 20px;
+            font-weight: 600;
+        }
+
+        .tool-body {
+            display: grid;
+            grid-template-columns: 1fr;
+            gap: 20px;
+            margin-bottom: 24px;
+        }
+
+        @media (min-width: 900px) {
+            .tool-body {
+                grid-template-columns: 1fr 1fr;
+            }
+        }
+
+        .tool-section {
+            background: rgba(248, 250, 252, 0.75);
+            padding: 18px;
+            border-radius: 12px;
+            border: 1px solid rgba(226, 232, 240, 0.6);
+        }
+
+        .tool-section-title {
+            font-size: 12px;
+            font-weight: 700;
+            color: var(--text-secondary);
+            margin-bottom: 10px;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+        }
+
+        .tool-section-content {
+            font-size: 13.5px;
+            color: var(--text-primary);
+            line-height: 1.6;
+        }
+
+        .tool-section-content ul {
+            list-style: none;
+            padding-left: 0;
+            display: flex;
+            flex-direction: column;
+            gap: 6px;
+        }
+
+        .tool-section-content li {
+            position: relative;
+            padding-left: 16px;
+        }
+
+        .tool-section-content li::before {
+            content: "•";
+            color: var(--primary);
+            font-weight: bold;
+            position: absolute;
+            left: 0;
+        }
+
+        .tool-action-bar {
+            display: flex;
+            justify-content: flex-end;
+            align-items: center;
+            gap: 12px;
+            border-top: 1px solid rgba(226, 232, 240, 0.8);
+            padding-top: 18px;
+        }
+
+        .duration-select {
+            background: #ffffff;
+            border: 1px solid var(--border-color);
+            color: var(--text-secondary);
+            padding: 8px 12px;
+            border-radius: 8px;
+            font-size: 13px;
+            font-weight: 500;
+            outline: none;
+            cursor: pointer;
+            box-shadow: 0 1px 2px rgba(0,0,0,0.02);
+        }
+
+        .duration-select:focus {
+            border-color: var(--primary);
+        }
+
+        .btn-add {
+            background: rgba(124, 58, 237, 0.05);
+            border: 1px solid var(--primary);
+            color: var(--primary);
+            padding: 8px 16px;
+            border-radius: 8px;
+            font-size: 13px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all var(--transition-speed);
+            display: flex;
+            align-items: center;
+            gap: 6px;
+        }
+
+        .btn-add:hover {
+            background: var(--primary);
+            color: white;
+            box-shadow: 0 4px 12px var(--primary-glow);
+        }
+
+        /* Case Studies View */
+        .case-container {
+            display: grid;
+            grid-template-columns: 1fr;
+            gap: 30px;
+        }
+
+        @media (min-width: 950px) {
+            .case-container {
+                grid-template-columns: 1.2fr 1fr;
+            }
+        }
+
+        .case-left-pane {
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
+        }
+
+        .case-story-card {
+            background: var(--bg-card);
+            border: 1px solid var(--border-color);
+            border-radius: 16px;
+            padding: 30px;
+            line-height: 1.65;
+            font-size: 14.5px;
+            color: var(--text-primary);
+            overflow-y: auto;
+            max-height: 650px;
+            box-shadow: 0 10px 30px -10px rgba(148, 163, 184, 0.1);
+        }
+
+        .case-story-card h3 {
+            font-family: 'Outfit', sans-serif;
+            font-size: 20px;
+            margin-bottom: 16px;
+            border-bottom: 1px solid rgba(226, 232, 240, 0.8);
+            padding-bottom: 10px;
+            color: var(--primary);
+        }
+
+        .case-story-card h4 {
+            margin-top: 20px;
+            margin-bottom: 10px;
+            color: var(--text-primary);
+            font-size: 16px;
+            border-left: 3px solid var(--primary);
+            padding-left: 10px;
+        }
+
+        .case-story-card p {
+            margin-bottom: 14px;
+        }
+
+        .case-story-card ul {
+            margin-bottom: 16px;
+            padding-left: 20px;
+        }
+
+        .case-story-card li {
+            margin-bottom: 6px;
+        }
+
+        .case-qa-pane {
+            display: flex;
+            flex-direction: column;
+            gap: 16px;
+        }
+
+        .qa-card {
+            background: #ffffff;
+            border: 1px solid var(--border-color);
+            border-radius: 12px;
+            padding: 20px;
+            transition: all 0.2s;
+            box-shadow: 0 4px 12px rgba(148, 163, 184, 0.03);
+        }
+
+        .qa-card:hover {
+            border-color: rgba(20, 184, 166, 0.3);
+            box-shadow: 0 8px 24px rgba(148, 163, 184, 0.06);
+        }
+
+        .qa-question {
+            font-size: 14px;
+            font-weight: 700;
+            color: var(--primary);
+            margin-bottom: 10px;
+            display: flex;
+            gap: 8px;
+            line-height: 1.4;
+        }
+
+        .qa-answer {
+            font-size: 13.5px;
+            color: var(--text-secondary);
+            line-height: 1.6;
+            background: rgba(248, 250, 252, 0.8);
+            padding: 12px 16px;
+            border-radius: 8px;
+            border: 1px solid rgba(226, 232, 240, 0.5);
+            white-space: pre-wrap;
+        }
+
+        /* Syllabus Planner Grid */
+        .planner-layout {
+            display: grid;
+            grid-template-columns: 1fr;
+            gap: 30px;
+        }
+
+        @media (min-width: 950px) {
+            .planner-layout {
+                grid-template-columns: 1.8fr 1.2fr;
+            }
+        }
+
+        .planner-main {
+            display: flex;
+            flex-direction: column;
+            gap: 16px;
+        }
+
+        .planner-empty-state {
+            background: rgba(255, 255, 255, 0.5);
+            border: 2px dashed rgba(203, 213, 225, 0.8);
+            border-radius: 16px;
+            padding: 60px 20px;
+            text-align: center;
+            color: var(--text-secondary);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 16px;
+        }
+
+        .planner-item-card {
+            background: var(--bg-card);
+            border: 1px solid var(--border-color);
+            border-radius: 12px;
+            padding: 20px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 20px;
+            transition: all 0.2s;
+            box-shadow: 0 4px 15px rgba(148, 163, 184, 0.03);
+        }
+
+        .planner-item-card:hover {
+            border-color: var(--border-hover);
+            box-shadow: 0 6px 20px rgba(124, 58, 237, 0.05);
+        }
+
+        .planner-item-left {
+            display: flex;
+            align-items: center;
+            gap: 16px;
+            flex: 1;
+        }
+
+        .reorder-btns {
+            display: flex;
+            flex-direction: column;
+            gap: 4px;
+        }
+
+        .btn-order {
+            background: transparent;
+            border: none;
+            color: var(--text-muted);
+            cursor: pointer;
+            padding: 4px;
+            border-radius: 4px;
+            transition: all 0.2s;
+        }
+
+        .btn-order:hover {
+            color: var(--primary);
+            background: rgba(124, 58, 237, 0.05);
+        }
+
+        .planner-item-info {
+            flex: 1;
+        }
+
+        .planner-item-name {
+            font-size: 15.5px;
+            font-weight: 700;
+            color: var(--text-primary);
+            margin-bottom: 4px;
+        }
+
+        .planner-item-tag {
+            font-size: 11px;
+            color: var(--text-secondary);
+            display: flex;
+            gap: 8px;
+            align-items: center;
+        }
+
+        .planner-item-type {
+            color: var(--secondary);
+            font-weight: 600;
+        }
+
+        .planner-item-right {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .planner-duration-input {
+            width: 75px;
+            background: #ffffff;
+            border: 1px solid var(--border-color);
+            color: var(--text-primary);
+            padding: 8px;
+            border-radius: 6px;
+            text-align: center;
+            outline: none;
+            font-weight: 600;
+            font-size: 13px;
+        }
+
+        .planner-duration-input:focus {
+            border-color: var(--primary);
+        }
+
+        .btn-delete {
+            background: transparent;
+            border: 1px solid transparent;
+            color: var(--text-muted);
+            width: 34px;
+            height: 34px;
+            border-radius: 6px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+
+        .btn-delete:hover {
+            color: var(--accent);
+            border-color: rgba(244, 63, 94, 0.15);
+            background: rgba(244, 63, 94, 0.05);
+        }
+
+        /* Custom Session Block creation */
+        .add-custom-block-card {
+            background: rgba(255, 255, 255, 0.5);
+            border: 1px dashed rgba(203, 213, 225, 1);
+            border-radius: 12px;
+            padding: 16px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 16px;
+        }
+
+        .custom-block-input {
+            background: #ffffff;
+            border: 1px solid var(--border-color);
+            color: var(--text-primary);
+            padding: 8px 12px;
+            border-radius: 6px;
+            font-size: 13px;
+            outline: none;
+            flex: 1;
+        }
+
+        .custom-block-input:focus {
+            border-color: var(--primary);
+        }
+
+        .btn-add-custom {
+            background: rgba(20, 184, 166, 0.05);
+            border: 1px solid var(--secondary);
+            color: var(--secondary);
+            padding: 8px 16px;
+            border-radius: 6px;
+            font-size: 13px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+
+        .btn-add-custom:hover {
+            background: var(--secondary);
+            color: white;
+        }
+
+        /* Planner Sidebar Options */
+        .planner-sidebar {
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
+        }
+
+        .control-box {
+            background: var(--bg-card);
+            border: 1px solid var(--border-color);
+            border-radius: 12px;
+            padding: 20px;
+            box-shadow: 0 4px 15px rgba(148, 163, 184, 0.02);
+        }
+
+        .control-box-title {
+            font-size: 14px;
+            font-weight: 700;
+            color: var(--text-primary);
+            margin-bottom: 12px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .export-buttons {
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+        }
+
+        .btn-action {
+            width: 100%;
+            padding: 10px;
+            border-radius: 8px;
+            border: none;
+            font-size: 13px;
+            font-weight: 600;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+            transition: all 0.2s;
+        }
+
+        .btn-primary-action {
+            background: linear-gradient(135deg, var(--primary), var(--secondary));
+            color: white;
+            box-shadow: 0 4px 12px rgba(124, 58, 237, 0.2);
+        }
+
+        .btn-primary-action:hover {
+            opacity: 0.95;
+            box-shadow: 0 4px 16px rgba(124, 58, 237, 0.3);
+        }
+
+        .btn-outline-action {
+            background: #ffffff;
+            border: 1px solid var(--border-color);
+            color: var(--text-secondary);
+        }
+
+        .btn-outline-action:hover {
+            background: rgba(248, 250, 252, 0.8);
+            border-color: var(--border-hover);
+            color: var(--text-primary);
+        }
+
+        /* Balance radar/meters */
+        .balance-meters {
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+        }
+
+        .meter-item {
+            display: flex;
+            flex-direction: column;
+            gap: 6px;
+        }
+
+        .meter-info {
+            display: flex;
+            justify-content: space-between;
+            font-size: 12px;
+        }
+
+        .meter-label {
+            color: var(--text-secondary);
+        }
+
+        .meter-count {
+            font-weight: 600;
+            color: var(--text-primary);
+        }
+
+        .meter-track {
+            height: 6px;
+            background: rgba(226, 232, 240, 0.8);
+            border-radius: 3px;
+            overflow: hidden;
+        }
+
+        .meter-fill {
+            height: 100%;
+            border-radius: 3px;
+            transition: width 0.3s;
+        }
+
+        /* Modal styling */
+        .modal {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: rgba(15, 23, 42, 0.4);
+            backdrop-filter: blur(8px);
+            z-index: 1000;
+            display: none;
+            align-items: center;
+            justify-content: center;
+            padding: 20px;
+        }
+
+        .modal.active {
+            display: flex;
+        }
+
+        .modal-content {
+            background: #ffffff;
+            border: 1px solid var(--border-color);
+            border-radius: 16px;
+            width: 100%;
+            max-width: 800px;
+            max-height: 80vh;
+            display: flex;
+            flex-direction: column;
+            box-shadow: 0 25px 50px -12px rgba(15, 23, 42, 0.15);
+        }
+
+        .modal-header {
+            padding: 20px;
+            border-bottom: 1px solid var(--border-color);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .modal-title {
+            font-family: 'Outfit', sans-serif;
+            font-size: 18px;
+            font-weight: 700;
+            color: var(--text-primary);
+        }
+
+        .btn-close-modal {
+            background: transparent;
+            border: none;
+            color: var(--text-muted);
+            font-size: 24px;
+            cursor: pointer;
+            transition: color 0.2s;
+        }
+
+        .btn-close-modal:hover {
+            color: var(--text-primary);
+        }
+
+        .modal-body {
+            padding: 20px;
+            overflow-y: auto;
+            flex: 1;
+        }
+
+        .export-textarea {
+            width: 100%;
+            height: 350px;
+            background: #f8fafc;
+            border: 1px solid var(--border-color);
+            border-radius: 8px;
+            color: #334155;
+            font-family: 'Courier New', Courier, monospace;
+            font-size: 13.5px;
+            padding: 14px;
+            outline: none;
+            resize: none;
+            line-height: 1.5;
+        }
+
+        .export-textarea:focus {
+            border-color: var(--primary);
+        }
+
+        .modal-footer {
+            padding: 16px 20px;
+            border-top: 1px solid var(--border-color);
+            display: flex;
+            justify-content: flex-end;
+            gap: 12px;
+        }
+
+        /* Scrollbar styles */
+        ::-webkit-scrollbar {
+            width: 6px;
+            height: 6px;
+        }
+
+        ::-webkit-scrollbar-track {
+            background: rgba(0, 0, 0, 0.02);
+        }
+
+        ::-webkit-scrollbar-thumb {
+            background: rgba(124, 58, 237, 0.2);
+            border-radius: 3px;
+        }
+
+        ::-webkit-scrollbar-thumb:hover {
+            background: rgba(124, 58, 237, 0.4);
+        }
+
+        /* Notifications */
+        .toast {
+            position: fixed;
+            bottom: 24px;
+            right: 24px;
+            background: rgba(13, 148, 136, 0.95);
+            color: white;
+            padding: 12px 24px;
+            border-radius: 8px;
+            font-weight: 600;
+            font-size: 13px;
+            box-shadow: 0 8px 30px rgba(15, 23, 42, 0.15);
+            z-index: 1100;
+            display: none;
+            animation: slideUp 0.3s ease-out;
+        }
+
+        @keyframes slideUp {
+            from { transform: translateY(100px); opacity: 0; }
+            to { transform: translateY(0); opacity: 1; }
+        }
+
+        /* Floating Cart FAB */
+        .cart-fab {
+            position: fixed;
+            bottom: 30px;
+            right: 30px;
+            width: 60px;
+            height: 60px;
+            background: linear-gradient(135deg, var(--primary), var(--secondary));
+            border: none;
+            border-radius: 50%;
+            color: white;
+            font-size: 24px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            box-shadow: 0 8px 24px rgba(124, 58, 237, 0.35);
+            z-index: 950;
+            transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+        }
+
+        .cart-fab:hover {
+            transform: scale(1.1) translateY(-3px);
+            box-shadow: 0 12px 30px rgba(124, 58, 237, 0.5);
+        }
+
+        .cart-fab-badge {
+            position: absolute;
+            top: -5px;
+            right: -5px;
+            background: var(--accent);
+            color: white;
+            font-size: 11px;
+            font-weight: 800;
+            width: 22px;
+            height: 22px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border: 2px solid white;
+            box-shadow: 0 2px 8px rgba(225, 29, 72, 0.4);
+            animation: badgePulse 2s infinite;
+        }
+
+        @keyframes badgePulse {
+            0% { transform: scale(1); }
+            50% { transform: scale(1.15); }
+            100% { transform: scale(1); }
+        }
+
+        /* Cart Drawer */
+        .cart-drawer {
+            position: fixed;
+            top: 0;
+            right: calc(-1 * var(--drawer-width));
+            width: var(--drawer-width);
+            height: 100vh;
+            background: rgba(255, 255, 255, 0.98);
+            backdrop-filter: blur(20px);
+            border-left: 1px solid var(--border-color);
+            box-shadow: -10px 0 40px rgba(15, 23, 42, 0.1);
+            z-index: 1100;
+            display: flex;
+            flex-direction: column;
+            transition: transform var(--transition-speed) cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        .cart-drawer.open {
+            transform: translateX(calc(-1 * var(--drawer-width)));
+        }
+
+        .cart-drawer-header {
+            padding: 20px 24px;
+            border-bottom: 1px solid var(--border-color);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            background: #ffffff;
+        }
+
+        .cart-drawer-title {
+            font-family: 'Outfit', sans-serif;
+            font-size: 18px;
+            font-weight: 700;
+            color: var(--text-primary);
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .cart-drawer-close {
+            background: transparent;
+            border: none;
+            font-size: 24px;
+            color: var(--text-muted);
+            cursor: pointer;
+            transition: color 0.2s;
+        }
+
+        .cart-drawer-close:hover {
+            color: var(--text-primary);
+        }
+
+        .cart-drawer-body {
+            flex: 1;
+            padding: 24px;
+            overflow-y: auto;
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
+        }
+
+        .cart-drawer-footer {
+            padding: 24px;
+            border-top: 1px solid var(--border-color);
+            background: #ffffff;
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+        }
+
+        .cart-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: rgba(15, 23, 42, 0.25);
+            backdrop-filter: blur(4px);
+            z-index: 1099;
+            opacity: 0;
+            pointer-events: none;
+            transition: opacity var(--transition-speed) ease;
+        }
+
+        .cart-overlay.open {
+            opacity: 1;
+            pointer-events: auto;
+        }
+
+        @media (max-width: 480px) {
+            :root {
+                --drawer-width: 100%;
+            }
+        }
+
+        /* Search and Filter System */
+        .search-filter-container {
+            background: #ffffff;
+            border: 1px solid var(--border-color);
+            border-radius: 16px;
+            padding: 24px;
+            margin-bottom: 30px;
+            box-shadow: 0 4px 20px -2px rgba(148, 163, 184, 0.05);
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
+        }
+
+        .search-box {
+            position: relative;
+            width: 100%;
+        }
+
+        .search-icon {
+            position: absolute;
+            left: 16px;
+            top: 50%;
+            transform: translateY(-50%);
+            color: var(--text-muted);
+            font-size: 16px;
+        }
+
+        .search-box input {
+            width: 100%;
+            padding: 14px 16px 14px 44px;
+            background: #f8fafc;
+            border: 1px solid var(--border-color);
+            border-radius: 10px;
+            font-size: 14.5px;
+            color: var(--text-primary);
+            outline: none;
+            transition: all var(--transition-speed);
+        }
+
+        .search-box input:focus {
+            border-color: var(--primary);
+            background: #ffffff;
+            box-shadow: 0 0 0 3px var(--primary-glow);
+        }
+
+        .filter-section {
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+        }
+
+        .filter-label {
+            font-size: 12px;
+            font-weight: 700;
+            color: var(--text-secondary);
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        .filter-pills {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 8px;
+        }
+
+        .filter-pill {
+            background: #f1f5f9;
+            border: 1px solid transparent;
+            color: var(--text-secondary);
+            padding: 6px 14px;
+            border-radius: 20px;
+            font-size: 13px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all var(--transition-speed);
+            user-select: none;
+        }
+
+        .filter-pill:hover {
+            background: rgba(124, 58, 237, 0.05);
+            color: var(--primary);
+            border-color: var(--border-hover);
+        }
+
+        .filter-pill.active {
+            background: var(--primary);
+            color: white;
+            border-color: var(--primary);
+            box-shadow: 0 4px 10px var(--primary-glow);
+        }
+        
+        .no-results {
+            background: #ffffff;
+            border: 1px solid var(--border-color);
+            border-radius: 16px;
+            padding: 40px 20px;
+            text-align: center;
+            color: var(--text-secondary);
+        }
+    </style>
+</head>
+<body>
+
+    <!-- Login Protection Overlay -->
+    <div id="password-gate" style="position: fixed; top: 0; left: 0; right: 0; bottom: 0; background-color: #0b0f19; display: flex; align-items: center; justify-content: center; z-index: 99999; transition: opacity 0.3s ease; font-family: system-ui, -apple-system, sans-serif;">
+        <div style="background-color: #111827; border: 1px solid #1f2937; border-radius: 16px; padding: 32px; max-width: 380px; width: 100%; margin: 16px; text-align: center; box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.5); color: #f3f4f6;">
+            <div style="font-size: 40px; margin-bottom: 16px;">🔑</div>
+            <h2 style="font-size: 20px; font-weight: bold; margin-bottom: 8px; color: #ffffff;">請登入存取工作坊</h2>
+            <p style="color: #9ca3af; font-size: 13px; line-height: 1.5; margin-bottom: 24px;">本專案受帳號密碼保護，請輸入正確的帳號與密碼以進入工作坊網頁。</p>
+            <form id="password-form" onsubmit="handleGateSubmit(event)">
+                <input type="text" id="gate-username-input" style="width: 100%; box-sizing: border-box; padding: 12px; background-color: #1f2937; border: 1px solid #374151; border-radius: 8px; color: #ffffff; text-align: center; font-size: 14px; outline: none; margin-bottom: 12px; transition: border-color 0.2s;" placeholder="請輸入帳號" required autofocus autocomplete="username">
+                <input type="password" id="gate-password-input" style="width: 100%; box-sizing: border-box; padding: 12px; background-color: #1f2937; border: 1px solid #374151; border-radius: 8px; color: #ffffff; text-align: center; font-size: 14px; outline: none; margin-bottom: 16px; transition: border-color 0.2s;" placeholder="請輸入密碼" required autocomplete="current-password">
+                <button type="submit" style="width: 100%; padding: 12px; background-color: #f59e0b; border: none; border-radius: 8px; color: #0b0f19; font-weight: bold; font-size: 14px; cursor: pointer; transition: background-color 0.2s;">確認進入</button>
+            </form>
+            <p id="gate-error-msg" style="color: #ef4444; font-size: 12px; margin-top: 12px; height: 16px; opacity: 0; transition: opacity 0.2s; margin-bottom: 0;">帳號或密碼錯誤，請重試！</p>
+        </div>
+    </div>
+    
+    <script>
+        (function() {
+            if (sessionStorage.getItem('ea_hook_unlocked_konya') === 'true') {
+                document.getElementById('password-gate').style.display = 'none';
+            }
+        })();
+
+        function handleGateSubmit(e) {
+            e.preventDefault();
+            const username = document.getElementById('gate-username-input').value.trim();
+            const password = document.getElementById('gate-password-input').value;
+            const errorMsg = document.getElementById('gate-error-msg');
+            
+            if (username === 'Konya' && password === 'Percy') {
+                sessionStorage.setItem('ea_hook_unlocked_konya', 'true');
+                const gate = document.getElementById('password-gate');
+                gate.style.opacity = '0';
+                setTimeout(() => {
+                    gate.style.display = 'none';
+                }, 300);
+            } else {
+                errorMsg.style.opacity = '1';
+                document.getElementById('gate-password-input').value = '';
+                setTimeout(() => {
+                    errorMsg.style.opacity = '0';
+                }, 3000);
+            }
+        }
+    </script>
+
+    <!-- TOP HEADER -->
+    <div class="top-header">
+        <button class="btn-toggle-sidebar" onclick="toggleSidebar()">☰</button>
+        <div class="top-header-brand">
+            <span class="brand-logo-mini">EA</span>
+            <span class="brand-name-mini">情緒敏捷引導庫</span>
+        </div>
+    </div>
+
+    <div class="sidebar-overlay" onclick="toggleSidebar()"></div>
+
+    <div class="app-container">
+        <!-- SIDEBAR -->
+        <aside>
+            <div class="nav-section">
+                <div class="nav-section-title">工具庫</div>
+                <ul class="nav-menu">
+                    <li class="nav-item active" onclick="switchTab('toolkit')">
+                        <span class="nav-icon">📚</span>
+                        <span>情緒敏捷工具庫</span>
+                    </li>
+                </ul>
+            </div>
+
+            <div class="nav-section">
+                <div class="nav-section-title">案例研究</div>
+                <ul class="nav-menu">
+                    <li class="nav-item" onclick="switchTab('case-microsoft')">
+                        <span class="nav-icon">🏢</span>
+                        <span>微軟文化轉型</span>
+                    </li>
+                    <li class="nav-item" onclick="switchTab('case-maya')">
+                        <span class="nav-icon">👩</span>
+                        <span>Maya 領導力困境</span>
+                    </li>
+                </ul>
+            </div>
+        </aside>
+
+        <!-- MAIN CONTENT -->
+        <main>
+        
+        <!-- HEADER -->
+        <header>
+            <div class="header-left">
+                <h1 id="pageTitle">5天引導工具包</h1>
+                <p id="pageDescription">瀏覽完整的五天 Emotional Agility (EA) 引導工具，挑選適合的工具加入購物車，動態規劃您的專屬引導大綱。</p>
+            </div>
+            
+            <div class="header-right">
+                <!-- Dropdown for templates -->
+                <div class="template-dropdown">
+                    <button class="btn-secondary" onclick="toggleDropdown()">
+                        <span>⚡ 載入主題推薦套裝</span>
+                        <span style="font-size:10px;">▼</span>
+                    </button>
+                    <div id="templateDropdown" class="dropdown-menu">
+                        <button class="dropdown-item" onclick="loadTemplate('leadership')">
+                            <strong>領導力覺察主題套裝</strong>
+                            <div class="dropdown-item-desc">偏重自我 hooks 覺察、Maya案例分析與三人教練對話，適合中高階主管。</div>
+                        </button>
+                        <button class="dropdown-item" onclick="loadTemplate('team-communication')">
+                            <strong>團隊溝通與回饋實作套裝</strong>
+                            <div class="dropdown-item-desc">聚焦於觀察與腦補、微軟案例、Powerful Questions 及 Speakable line 演練。</div>
+                        </button>
+                        <button class="dropdown-item" onclick="loadTemplate('personal-reflection')">
+                            <strong>個人反思與心智防衛套裝</strong>
+                            <div class="dropdown-item-desc">著重 I Am 自我標籤、Hook Bias 直覺偏見、第三人稱自由書寫，適合個人成長。</div>
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </header>
+
+                <!-- TAB CONTENT: TOOLKIT -->
+        <div id="tab-toolkit" class="tab-content active">
+            <!-- Search & Filter System -->
+            <div class="search-filter-container">
+                <div class="search-box">
+                    <span class="search-icon">🔍</span>
+                    <input type="text" id="toolSearchInput" placeholder="搜尋工具名稱、目的、流程、引導重點、標籤或關鍵字..." oninput="filterTools()">
+                </div>
+                
+                <div class="filter-section">
+                    <div class="filter-label">🏷️ 主題類別</div>
+                    <div class="filter-pills" id="categoryFilterPills">
+                        <!-- Dynamically filled Category pills -->
+                    </div>
+                </div>
+                
+                <div class="filter-section">
+                    <div class="filter-label">🏷️ 屬性標籤</div>
+                    <div class="filter-pills" id="tagFilterPills">
+                        <!-- Dynamically filled Tag pills -->
+                    </div>
+                </div>
+            </div>
+
+            <!-- Category Overview Card (Dynamically shown/hidden) -->
+            <div id="categoryOverviewCard" class="day-overview-card" style="display: none;">
+                <span class="day-overview-tag">類別學習主軸與節奏</span>
+                <h3 id="categoryTitle" class="day-overview-title"></h3>
+                <div id="categoryOverview" class="day-overview-text"></div>
+            </div>
+
+            <!-- Tools List -->
+            <div id="toolsList" class="tools-grid">
+                <!-- Dynamically filled -->
+            </div>
+        </div><!-- TAB CONTENT: CASE MICROSOFT -->
+        <div id="tab-case-microsoft" class="tab-content">
+            <div class="case-container">
+                <div class="case-left-pane">
+                    <div class="case-story-card">
+                        <h3>Microsoft 的文化轉型案例背景</h3>
+                        <div id="microsoftStoryText">
+                            <!-- Dynamically loaded -->
+                        </div>
+                    </div>
+                    <div class="tool-action-bar">
+                        <span style="font-size: 13.5px; color: var(--text-secondary);">將本案例討論加入您的精選大綱：</span>
+                        <select id="microsoftCaseDuration" class="duration-select">
+                            <option value="15">15 分鐘</option>
+                            <option value="20">20 分鐘</option>
+                            <option value="30" selected>30 分鐘</option>
+                            <option value="45">45 分鐘</option>
+                        </select>
+                        <button class="btn-add" onclick="addCaseToPlanner('microsoft')">➕ 加入大綱規劃</button>
+                    </div>
+                </div>
+                
+                <div class="case-qa-pane">
+                    <h3 style="font-family: 'Outfit', sans-serif; font-size: 18px; margin-bottom: 10px; color: var(--text-primary)">案例反思指引與參考回答</h3>
+                    <div id="microsoftQAPane">
+                        <!-- Dynamically loaded -->
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- TAB CONTENT: CASE MAYA -->
+        <div id="tab-case-maya" class="tab-content">
+            <div class="case-container">
+                <div class="case-left-pane">
+                    <div class="case-story-card">
+                        <h3>Maya 領導挑戰與系統壓力案例背景</h3>
+                        <div id="mayaStoryText">
+                            <!-- Dynamically loaded -->
+                        </div>
+                    </div>
+                    <div class="tool-action-bar">
+                        <span style="font-size: 13.5px; color: var(--text-secondary);">將本案例討論加入您的精選大綱：</span>
+                        <select id="mayaCaseDuration" class="duration-select">
+                            <option value="20">20 分鐘</option>
+                            <option value="30" selected>30 分鐘</option>
+                            <option value="45">45 分鐘</option>
+                            <option value="60">60 分鐘</option>
+                        </select>
+                        <button class="btn-add" onclick="addCaseToPlanner('maya')">➕ 加入大綱規劃</button>
+                    </div>
+                </div>
+                
+                <div class="case-qa-pane">
+                    <h3 style="font-family: 'Outfit', sans-serif; font-size: 18px; margin-bottom: 10px; color: var(--text-primary)">案例分析問答 (Part A - C)</h3>
+                    <div id="mayaQAPane" style="max-height: 700px; overflow-y: auto; padding-right: 8px;">
+                        <!-- Dynamically loaded -->
+                    </div>
+                </div>
+            </div>
+        </div>
+
+    </main>
+
+        </main>
+    </div> <!-- Close .app-container -->
+
+    <!-- FLOATING CART FAB -->
+    <button class="cart-fab" id="cartFab" onclick="toggleCart()">
+        🛒
+        <div id="cartBadge" class="cart-fab-badge" style="display: none;">0</div>
+    </button>
+
+    <!-- CART OVERLAY -->
+    <div class="cart-overlay" id="cartOverlay" onclick="toggleCart()"></div>
+
+    <!-- CART DRAWER -->
+    <div class="cart-drawer" id="cartDrawer">
+        <div class="cart-drawer-header">
+            <h3 class="cart-drawer-title">🛒 我的挑選清單 (購物車)</h3>
+            <button class="cart-drawer-close" onclick="toggleCart()">×</button>
+        </div>
+        
+        <div class="cart-drawer-body">
+            <!-- Empty State -->
+            <div id="plannerEmptyState" class="planner-empty-state">
+                <span style="font-size: 48px;">🛒</span>
+                <h3>您的購物車目前是空的</h3>
+                <p>在左側工具庫或案例研究中，點擊「加入大綱規劃」按鈕將活動加入購物車。</p>
+            </div>
+
+            <!-- Items container -->
+            <div id="plannerItemsList" style="display: flex; flex-direction: column; gap: 14px;">
+                <!-- Dynamically filled -->
+            </div>
+
+            <!-- Add custom block -->
+            <div class="add-custom-block-card" style="margin-top: 10px;">
+                <input type="text" id="customBlockName" class="custom-block-input" placeholder="例如：暖身與引言 / 中場休息 / 課程結尾 QA...">
+                <input type="number" id="customBlockDuration" class="planner-duration-input" value="10" min="5" max="120" style="width: 80px;">
+                <span style="font-size: 13px; color: var(--text-secondary); margin-right: 10px;">分</span>
+                <button class="btn-add-custom" onclick="addCustomBlock()">➕ 新增自訂區塊</button>
+            </div>
+            
+            <hr style="border: 0; border-top: 1px solid var(--border-color); margin: 20px 0;">
+
+            <div style="font-size: 14px; font-weight: 700; color: var(--text-primary); margin-bottom: 12px; display: flex; align-items: center; gap: 8px;">
+                <span>⚖️ 學習體驗平衡度</span>
+                <span id="totalTimeLabel" class="time-badge ok" style="font-size:11px;">0 min</span>
+            </div>
+            
+            <div class="balance-meters">
+                <div class="meter-item">
+                    <div class="meter-info">
+                        <span class="meter-label">安全感與破冰 (Day 1)</span>
+                        <span id="meter-cnt-1" class="meter-count">0</span>
+                    </div>
+                    <div class="meter-track"><div id="meter-fill-1" class="meter-fill" style="background: #3b82f6; width: 0%;"></div></div>
+                </div>
+                <div class="meter-item">
+                    <div class="meter-info">
+                        <span class="meter-label">自我臨在與覺察 (Day 2)</span>
+                        <span id="meter-cnt-2" class="meter-count">0</span>
+                    </div>
+                    <div class="meter-track"><div id="meter-fill-2" class="meter-fill" style="background: #8b5cf6; width: 0%;"></div></div>
+                </div>
+                <div class="meter-item">
+                    <div class="meter-info">
+                        <span class="meter-label">直覺偏見與反思 (Day 3)</span>
+                        <span id="meter-cnt-3" class="meter-count">0</span>
+                    </div>
+                    <div class="meter-track"><div id="meter-fill-3" class="meter-fill" style="background: #ec4899; width: 0%;"></div></div>
+                </div>
+                <div class="meter-item">
+                    <div class="meter-info">
+                        <span class="meter-label">教練對話與技能 (Day 4)</span>
+                        <span id="meter-cnt-4" class="meter-count">0</span>
+                    </div>
+                    <div class="meter-track"><div id="meter-fill-4" class="meter-fill" style="background: #14b8a6; width: 0%;"></div></div>
+                </div>
+                <div class="meter-item">
+                    <div class="meter-info">
+                        <span class="meter-label">學習整合與承諾 (Day 5)</span>
+                        <span id="meter-cnt-5" class="meter-count">0</span>
+                    </div>
+                    <div class="meter-track"><div id="meter-fill-5" class="meter-fill" style="background: #f59e0b; width: 0%;"></div></div>
+                </div>
+            </div>
+        </div>
+        
+        <div class="cart-drawer-footer">
+            <button class="btn-action btn-primary-action" onclick="exportSyllabus()">📋 匯出精選引導清單</button>
+            <button class="btn-action btn-outline-action" onclick="clearPlanner()">🧹 清空目前購物車</button>
+        </div>
+    </div>
+
+    <!-- EXPORT MODAL -->
+    <div id="exportModal" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3 class="modal-title">📋 匯出您的精選引導工具大綱</h3>
+                <button class="btn-close-modal" onclick="closeModal()">×</button>
+            </div>
+            <div class="modal-body">
+                <p style="font-size: 13.5px; color: var(--text-secondary); margin-bottom: 12px;">複製以下 Markdown 語法，即可直接貼入您的教案計畫或工作本中：</p>
+                <textarea id="exportTextarea" class="export-textarea" readonly></textarea>
+            </div>
+            <div class="modal-footer">
+                <button class="btn-secondary" onclick="closeModal()">關閉</button>
+                <button class="btn-action btn-primary-action" style="padding: 10px 20px; width: auto;" onclick="copySyllabusText()">複製清單內容</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- TOAST NOTIFICATION -->
+    <div id="toast" class="toast">已成功新增活動！</div>
+
+    <!-- DATA INJECTION -->
+    <script>
+        // Placeholders replaced by compiler script
+        const TOOLKIT_DATA = [
+    {
+        "tools":  [
+                      {
+                          "debrief":  [
+
+                                      ],
+                          "num":  1,
+                          "process":  [
+                                          "在課程前寄送簡短問卷",
+                                          "請學員填寫自己的工作領域",
+                                          "請學員分享最近最能代表自己的歌曲",
+                                          "請學員說明為什麼選擇這首歌"
+                                      ],
+                          "name":  "課前身份調查（Pre‑Event Identity Survey）",
+                          "type":  "課前準備",
+                          "purpose":  [
+                                          "在課程開始前了解學員背景",
+                                          "為分組或破冰活動準備素材",
+                                          "鼓勵學員提前進入自我表達狀態"
+                                      ],
+                          "insights":  [
+                                           "在課程開始前建立個人連結",
+                                           "讓學員更容易投入接下來的互動"
+                                       ],
+                          "tips":  [
+                                       "音樂是一種低壓力的自我表達方式",
+                                       "歌曲背後的故事常能引出個人背景"
+                                   ]
+                      },
+                      {
+                          "debrief":  [
+
+                                      ],
+                          "num":  2,
+                          "process":  [
+                                          "當重要資訊改變時（例如場地更換）寄送通知",
+                                          "要求學員回信確認收到訊息",
+                                          "針對未回覆者進行個別聯絡"
+                                      ],
+                          "name":  "訊息回覆確認（Confirmation Loop）",
+                          "type":  "活動營運工具",
+                          "purpose":  [
+                                          "確保學員收到重要訊息",
+                                          "降低主辦單位的不確定性"
+                                      ],
+                          "insights":  [
+                                           "簡單的確認機制可以大幅降低活動營運風險"
+                                       ],
+                          "tips":  [
+                                       "回覆確認可以快速辨識誰可能沒有收到訊息"
+                                   ]
+                      },
+                      {
+                          "debrief":  [
+
+                                      ],
+                          "num":  3,
+                          "process":  [
+                                          "在場地準備簡單茶點",
+                                          "邀請學員提前到場",
+                                          "讓學員自由交流與聊天"
+                                      ],
+                          "name":  "到場茶點交流（Arrival Tea Gathering）",
+                          "type":  "社交暖身",
+                          "purpose":  [
+                                          "讓學員在課程開始前先彼此認識",
+                                          "建立初步的人際關係"
+                                      ],
+                          "insights":  [
+                                           "在正式活動前建立關係，可以提升後續討論品質"
+                                       ],
+                          "tips":  [
+                                       "保持輕鬆與非正式氛圍"
+                                   ]
+                      },
+                      {
+                          "debrief":  [
+
+                                      ],
+                          "num":  4,
+                          "process":  [
+                                          "講師站在入口處迎接每位學員",
+                                          "逐一打招呼",
+                                          "依文化情境使用握手或擁抱"
+                                      ],
+                          "name":  "門口迎接儀式（Door Greeting Ritual）",
+                          "type":  "關係建立",
+                          "purpose":  [
+                                          "創造友善與溫暖的氛圍",
+                                          "縮短講師與學員之間的心理距離"
+                                      ],
+                          "insights":  [
+                                           "簡單的人際互動可以快速建立信任"
+                                       ],
+                          "tips":  [
+                                       "每個人都被看見與被歡迎"
+                                   ]
+                      },
+                      {
+                          "debrief":  [
+
+                                      ],
+                          "num":  5,
+                          "process":  [
+                                          "請學員打開課程工作本",
+                                          "講師朗讀開場文字",
+                                          "邀請學員進入課程情境"
+                                      ],
+                          "name":  "工作本開場儀式（Workbook Opening Ritual）",
+                          "type":  "學習轉換",
+                          "purpose":  [
+                                          "正式標誌課程開始",
+                                          "建立群體共同的學習時刻"
+                                      ],
+                          "insights":  [
+                                           "儀式可以幫助學員心理上轉換到學習狀態"
+                                       ],
+                          "tips":  [
+                                       "刻意放慢節奏，創造儀式感"
+                                   ]
+                      },
+                      {
+                          "debrief":  [
+
+                                      ],
+                          "num":  6,
+                          "process":  [
+                                          "投影問題",
+                                          "請學員先個人書寫答案",
+                                          "與旁邊學員進行兩人分享"
+                                      ],
+                          "name":  "開場問題反思（Opening Question Reflection）",
+                          "type":  "個人反思",
+                          "purpose":  [
+                                          "讓學員開始思考自己參與課程的動機",
+                                          "引發對課程主題的初步思考"
+                                      ],
+                          "insights":  [
+                                           "Think → Write → Share 的結構可以提升反思深度"
+                                       ],
+                          "tips":  [
+                                       "先給安靜思考時間再分享"
+                                   ]
+                      },
+                      {
+                          "debrief":  [
+
+                                      ],
+                          "num":  7,
+                          "process":  [
+                                          "在牆上貼出主題海報",
+                                          "發給學員不同顏色便利貼",
+                                          "請學員寫下想法並貼在海報上",
+                                          "邀請學員走動閱讀他人想法"
+                                      ],
+                          "name":  "集體便利貼牆（Collective Brainstorm Wall）",
+                          "type":  "群體共創",
+                          "purpose":  [
+                                          "讓群體觀點被可視化",
+                                          "建立共同理解"
+                                      ],
+                          "insights":  [
+                                           "視覺化可以幫助群體看見整體模式"
+                                       ],
+                          "tips":  [
+                                       "顏色分類可以幫助整理想法"
+                                   ]
+                      },
+                      {
+                          "debrief":  [
+
+                                      ],
+                          "num":  8,
+                          "process":  [
+                                          "請學員用五個關鍵字描述對課程的期待",
+                                          "依序快速分享"
+                                      ],
+                          "name":  "五個關鍵字期待分享（Five‑Word Expectation Round）",
+                          "type":  "群體發聲",
+                          "purpose":  [
+                                          "讓每位學員都有機會表達期待",
+                                          "鼓勵精簡與清楚表達"
+                                      ],
+                          "insights":  [
+                                           "字數限制可以提升表達清晰度"
+                                       ],
+                          "tips":  [
+                                       "保持節奏快速"
+                                   ]
+                      },
+                      {
+                          "debrief":  [
+
+                                      ],
+                          "num":  9,
+                          "process":  [
+                                          "在用餐區放置大型問題海報",
+                                          "學員在不同問題附近自然討論"
+                                      ],
+                          "name":  "餐桌討論海報（Dinner Conversation Posters）",
+                          "type":  "非正式對話",
+                          "purpose":  [
+                                          "在用餐時間引導有意義的交流",
+                                          "讓社交時間也能促進反思"
+                                      ],
+                          "insights":  [
+                                           "輕鬆環境常能產生更深層對話"
+                                       ],
+                          "tips":  [
+                                       "不要過度結構化討論"
+                                   ]
+                      },
+                      {
+                          "debrief":  [
+
+                                      ],
+                          "num":  10,
+                          "process":  [
+                                          "請學員閉上眼睛感受身體與情緒",
+                                          "發給每人一片葉子（例如檸檬葉）",
+                                          "請學員揉搓並聞香味",
+                                          "再次覺察身體與情緒狀態"
+                                      ],
+                          "name":  "感官覺察體驗（Sensory Awareness Ritual）",
+                          "type":  "身體覺察",
+                          "purpose":  [
+                                          "讓學員體驗感官如何影響心理狀態",
+                                          "創造難忘的身體體驗"
+                                      ],
+                          "insights":  [
+                                           "感官刺激可以快速改變心理狀態"
+                                       ],
+                          "tips":  [
+                                       "刻意放慢節奏"
+                                   ]
+                      }
+                  ],
+        "title":  "Arrival 與 Psychological Safety 建立",
+        "num":  1,
+        "overview":  [
+                         "第一天的設計重點是建立安全感、社群連結以及初步的自我反思。活動順序從社交暖身開始，接著進入個人反思，最後透過群體分享建立共同理解。",
+                         "整體學習節奏：",
+                         "連結（Connection） → 反思（Reflection） → 集體覺察（Collective Awareness） → 感官體驗（Sensory Experience）"
+                     ]
+    },
+    {
+        "tools":  [
+                      {
+                          "debrief":  [
+                                          "引導者可以提問：",
+                                          "這個 I am 讓你感到 放鬆還是緊繃？",
+                                          "這個標籤是 你選擇的，還是被期待的？",
+                                          "如果沒有這個標籤，你會怎樣？"
+                                      ],
+                          "num":  1,
+                          "process":  [
+                                          "引導者先分享自己的故事",
+                                          "說明自己過去曾陷入某種 「I am」自我認定循環，例如：「我必須永遠成功」「我必須照顧所有人」",
+                                          "邀請學員思考自己的「I am」",
+                                          "例如：",
+                                          "I am a goal keeperI am someone who must always learnI am responsible for everyone",
+                                          "每位學員寫下自己的 I am 句子",
+                                          "將句子寫在便利貼上 貼在自己身上",
+                                          "同時再寫一份在紙上保留"
+                                      ],
+                          "name":  "I Am Label（自我標籤練習）",
+                          "type":  "自我覺察",
+                          "purpose":  [
+                                          "讓學員看見自己對自己的身份標籤",
+                                          "體驗人如何被內在信念與角色束縛",
+                                          "建立對自我敘事（Self Narrative）的覺察"
+                                      ],
+                          "insights":  [
+                                           "人常常不是被現實限制，而是被自己相信的故事限制。"
+                                       ],
+                          "tips":  [
+                                       "貼在身上的標籤是一種象徵行為。",
+                                       "它代表：",
+                                       "我們常常被自己的身份與信念綁架。"
+                                   ]
+                      },
+                      {
+                          "debrief":  [
+
+                                      ],
+                          "num":  2,
+                          "process":  [
+                                          "學員分成 內圈與外圈",
+                                          "每個人與對面的人 一對一站立",
+                                          "引導者播放背景音樂",
+                                          "兩人 安靜地看著對方的眼睛",
+                                          "音樂停止時：",
+                                          "外圈或內圈移動",
+                                          "換下一個人",
+                                          "整個過程重複約 5輪",
+                                          "引導語",
+                                          "引導者可能會說：",
+                                          "Notice what you feelJust be presentNo need to perform"
+                                      ],
+                          "name":  "Eye Contact Circle（內外圈凝視練習）",
+                          "type":  "人際連結",
+                          "purpose":  [
+                                          "體驗不透過語言的連結",
+                                          "感受「被看見但不被評價」的安全感",
+                                          "建立 Presence（臨在）"
+                                      ],
+                          "insights":  [
+                                           "很多學員會發現：",
+                                           "即使不說話，也能感受到對方",
+                                           "被看見而不被評論會產生安全感"
+                                       ],
+                          "tips":  [
+                                       "不需要說話",
+                                       "不需要表現",
+                                       "只需要 存在與覺察"
+                                   ]
+                      },
+                      {
+                          "debrief":  [
+                                          "引導者可以問：",
+                                          "當動作變多時發生了什麼？"
+                                      ],
+                          "num":  3,
+                          "process":  [
+                                          "兩人一組。",
+                                          "第一輪",
+                                          "輪流說：",
+                                          "A：1B：2A：3B：1A：2B：3",
+                                          "持續約 90秒",
+                                          "第二輪",
+                                          "說 1 的人要加一個動作",
+                                          "例如：",
+                                          "拍手指向舉手",
+                                          "第三輪",
+                                          "說 2 的人加入動作",
+                                          "例如：",
+                                          "身體轉向轉身",
+                                          "第四輪",
+                                          "說 3 的人加入動作",
+                                          "例如：",
+                                          "蹲下伸展"
+                                      ],
+                          "name":  "1-2-3 Active Listening Game",
+                          "type":  "專注與同步",
+                          "purpose":  [
+                                          "訓練專注力",
+                                          "體驗什麼是 Active Listening",
+                                          "透過錯誤與混亂促進學習"
+                                      ],
+                          "insights":  [
+                                           "為了避免出錯，人必須：",
+                                           "全神貫注地聆聽。",
+                                           "這就是 Active Listening 的體驗版。"
+                                       ],
+                          "tips":  [
+                                       "隨著動作增加：",
+                                       "專注度會提升",
+                                       "出錯會變多",
+                                       "這是刻意設計的。"
+                                   ]
+                      },
+                      {
+                          "debrief":  [
+
+                                      ],
+                          "num":  4,
+                          "process":  [
+                                          "邀請原住民文化代表",
+                                          "先介紹文化背景",
+                                          "使用傳統樂器伴奏",
+                                          "引導一段冥想"
+                                      ],
+                          "name":  "Indigenous Guided Meditation",
+                          "type":  "文化體驗",
+                          "purpose":  [
+                                          "透過文化元素創造沉浸感",
+                                          "幫助學員進入內在覺察",
+                                          "建立與自然的連結"
+                                      ],
+                          "insights":  [
+                                           "文化元素可以：",
+                                           "增加沉浸感",
+                                           "強化情境體驗"
+                                       ],
+                          "tips":  [
+                                       "這不只是冥想技巧，",
+                                       "而是 文化情境中的冥想體驗。"
+                                   ]
+                      },
+                      {
+                          "debrief":  [
+
+                                      ],
+                          "num":  5,
+                          "process":  [
+
+                                      ],
+                          "name":  "Dynamic Meditation（動態冥想）",
+                          "type":  "身體覺察",
+                          "purpose":  [
+                                          "透過身體活動釋放情緒",
+                                          "讓注意力回到身體",
+                                          "打破過度理性思考",
+                                          "常見形式",
+                                          "例如：",
+                                          "閉眼呼吸",
+                                          "身體自由律動",
+                                          "隨音樂移動"
+                                      ],
+                          "insights":  [
+                                           "身體往往比語言 更早知道自己的狀態。"
+                                       ],
+                          "tips":  [
+                                       "鼓勵自然反應，",
+                                       "沒有標準動作。"
+                                   ]
+                      },
+                      {
+                          "debrief":  [
+
+                                      ],
+                          "num":  6,
+                          "process":  [
+                                          "引導者提出問題，例如：",
+                                          "「現在你的狀態有多放鬆？」",
+                                          "學員在空間中選擇一個位置",
+                                          "例如：",
+                                          "靠牆靠近中心某個角落",
+                                          "學員站到代表自己狀態的位置"
+                                      ],
+                          "name":  "State Positioning（空間定位）",
+                          "type":  "狀態外化",
+                          "purpose":  [
+                                          "將內在狀態外化為空間位置",
+                                          "用身體表達感受",
+                                          "促進群體覺察"
+                                      ],
+                          "insights":  [
+                                           "在群體情境中，",
+                                           "人常會傾向給出較正向的表達。",
+                                           "這是一種 群體心理效應。"
+                                       ],
+                          "tips":  [
+                                       "先觀察群體分布，",
+                                       "不急著解釋。"
+                                   ]
+                      }
+                  ],
+        "title":  "Presence 與 Connection",
+        "num":  2,
+        "overview":  [
+                         "第二天的課程主題是 Show Up，也就是：",
+                         "不評判地存在",
+                         "覺察自己的內在狀態",
+                         "感受與他人的連結",
+                         "因此當天多數活動都屬於 身體體驗與心理覺察工具，讓學員透過經驗理解：",
+                         "Presence（臨在）",
+                         "Connection（連結）",
+                         "Awareness（覺察）",
+                         "整體學習節奏為：",
+                         "Self Awareness → Human Connection → Focused Attention → Embodied Awareness"
+                     ]
+    },
+    {
+        "tools":  [
+
+                  ],
+        "title":  "流程工具總覽",
+        "num":  2,
+        "overview":  [
+                         "工具",
+                         "類型",
+                         "I Am Label",
+                         "自我覺察",
+                         "Eye Contact Circle",
+                         "人際連結",
+                         "1-2-3 Listening Game",
+                         "專注與同步",
+                         "Indigenous Meditation",
+                         "文化體驗",
+                         "Dynamic Meditation",
+                         "身體覺察",
+                         "State Positioning",
+                         "狀態外化"
+                     ]
+    },
+    {
+        "tools":  [
+
+                  ],
+        "title":  "共 6 個流程工具",
+        "num":  2,
+        "overview":  [
+
+                     ]
+    },
+    {
+        "tools":  [
+                      {
+                          "debrief":  [
+                                          "（關鍵提問）",
+                                          "引導者會提問：",
+                                          "哪一輪最容易？",
+                                          "通常大多數學員會回答：",
+                                          "第三輪最容易。"
+                                      ],
+                          "num":  1,
+                          "process":  [
+                                          "第一輪：快速命名",
+                                          "請學員在教室中 自由走動。",
+                                          "當看到物件時，快速說出它的名稱。",
+                                          "例如：",
+                                          "椅子桌子窗戶燈",
+                                          "鼓勵大家 用最快速度回答。",
+                                          "第二輪：重新想像",
+                                          "請學員對同樣的物件說出 完全不同的意義。",
+                                          "例如：",
+                                          "椅子 → 一頭大象鏡子 → 一本書桌子 → 一艘船",
+                                          "這一輪的目的是讓學員進入 想像與創造模式。",
+                                          "第三輪：說出缺點",
+                                          "看到任何物件時，都說出它 不好的地方。",
+                                          "例如：",
+                                          "這是一個很醜的燈這個杯子設計得很差這個桌子看起來很廉價"
+                                      ],
+                          "name":  "Hook Bias Exercise（直覺偏見體驗）",
+                          "type":  "偏見覺察",
+                          "purpose":  [
+                                          "讓學員體驗人如何快速形成沒有根據的判斷",
+                                          "看見直覺與偏見（Hook）如何自然出現",
+                                          "為後續探討假設與信念建立基礎"
+                                      ],
+                          "insights":  [
+                                           "人類非常容易：",
+                                           "對事物提出批評",
+                                           "在沒有證據的情況下做判斷",
+                                           "這些自動出現的想法就是：",
+                                           "Hook（未經驗證的信念或偏見）",
+                                           "延伸反思問題",
+                                           "引導者可以進一步提問：",
+                                           "我的 Hook 背後有哪些假設？",
+                                           "這些假設是否被驗證過？",
+                                           "如果這些假設不成立會發生什麼？"
+                                       ],
+                          "tips":  [
+                                       "這個活動的關鍵不是對錯，",
+                                       "而是讓學員體驗 判斷是如何自動產生的。"
+                                   ]
+                      },
+                      {
+                          "debrief":  [
+
+                                      ],
+                          "num":  2,
+                          "process":  [
+                                          "學員圍成一個圓圈。",
+                                          "引導者提出一個問題或主題。",
+                                          "學員依序分享自己的觀點與感受。",
+                                          "分組方式（可能形式）",
+                                          "有時也會依照不同背景分組，例如：",
+                                          "職業類型",
+                                          "個人傾向",
+                                          "特定角色"
+                                      ],
+                          "name":  "Circle Dialogue（圓圈對話）",
+                          "type":  "群體對話",
+                          "purpose":  [
+                                          "創造平等的分享空間",
+                                          "讓每個人都有機會表達觀點",
+                                          "建立集體聆聽"
+                                      ],
+                          "insights":  [
+                                           "圓圈對話能促進：",
+                                           "深度聆聽",
+                                           "多元觀點",
+                                           "群體理解"
+                                       ],
+                          "tips":  [
+                                       "Circle Dialogue 的特點是：",
+                                       "沒有講者與聽眾的區分",
+                                       "每個人都是參與者",
+                                       "強調平等發言與傾聽"
+                                   ]
+                      },
+                      {
+                          "debrief":  [
+
+                                      ],
+                          "num":  3,
+                          "process":  [
+                                          "引導者提供幾個活動選項，例如：",
+                                          "動態冥想",
+                                          "自由書寫",
+                                          "安靜反思",
+                                          "學員可以 自由選擇參與的活動。"
+                                      ],
+                          "name":  "Self-selected Breakout（自主活動）",
+                          "type":  "自主學習",
+                          "purpose":  [
+                                          "提供學員自主選擇學習方式",
+                                          "鼓勵不同形式的自我探索",
+                                          "讓學員依照當下需求選擇活動",
+                                          "是讓學員 依照自己的狀態進行探索。",
+                                          "設計理念",
+                                          "這種設計可以增加：",
+                                          "自主感（Autonomy）",
+                                          "個人節奏（Self pacing）"
+                                      ],
+                          "insights":  [
+                                           "不同學員會選擇不同方式：",
+                                           "有些人需要安靜反思有些人需要身體活動",
+                                           "這讓學習變得更加個人化。"
+                                       ],
+                          "tips":  [
+                                       "此活動沒有固定答案，"
+                                   ]
+                      },
+                      {
+                          "debrief":  [
+
+                                      ],
+                          "num":  4,
+                          "process":  [
+                                          "引導者提出書寫任務，例如：",
+                                          "寫一段關於自己的故事。",
+                                          "鼓勵學員使用 第三人稱視角。",
+                                          "例如：",
+                                          "「他現在正在經歷一段困難的時期。」",
+                                          "學員安靜書寫一段時間。"
+                                      ],
+                          "name":  "Free Writing（自由書寫）",
+                          "type":  "反思書寫",
+                          "purpose":  [
+                                          "透過書寫促進自我覺察",
+                                          "幫助學員整理內在想法",
+                                          "建立與自己對話的空間"
+                                      ],
+                          "insights":  [
+                                           "很多學員會發現，",
+                                           "當用第三人稱描述自己時，",
+                                           "更容易看到新的理解與可能性。"
+                                       ],
+                          "tips":  [
+                                       "不要過度思考語法或結構，",
+                                       "重點是 自由表達內在想法。",
+                                       "為什麼使用第三人稱",
+                                       "第三人稱可以：",
+                                       "增加心理距離",
+                                       "幫助更客觀看待自己",
+                                       "降低情緒壓力"
+                                   ]
+                      }
+                  ],
+        "title":  "Bias 覺察與自我反思",
+        "num":  3,
+        "overview":  [
+                         "第三天的課程設計主要圍繞兩個核心主題：",
+                         "看見自己的偏見（Bias / Hook）",
+                         "透過書寫與自主活動進行自我反思",
+                         "這一天的重點不在於學習新技巧，而是透過體驗與反思，看見我們如何在日常生活中形成快速判斷與信念。",
+                         "整體設計從 體驗 → 覺察 → 對話 → 反思 展開。",
+                         "整體學習節奏：",
+                         "Bias Awareness → Dialogue → Autonomy → Reflection"
+                     ]
+    },
+    {
+        "tools":  [
+
+                  ],
+        "title":  "流程工具總覽",
+        "num":  3,
+        "overview":  [
+                         "工具",
+                         "類型",
+                         "Hook Bias Exercise",
+                         "偏見覺察",
+                         "Circle Dialogue",
+                         "群體對話",
+                         "Self-selected Breakout",
+                         "自主探索",
+                         "Free Writing",
+                         "反思書寫"
+                     ]
+    },
+    {
+        "tools":  [
+
+                  ],
+        "title":  "共 4 個流程工具",
+        "num":  3,
+        "overview":  [
+
+                     ]
+    },
+    {
+        "tools":  [
+
+                  ],
+        "title":  "整體學習邏輯",
+        "num":  3,
+        "overview":  [
+                         "第三天的課程可以簡化為：",
+                         "偏見覺察 → 群體對話 → 自主探索 → 個人反思",
+                         "或從能力角度理解為：",
+                         "Awareness → Dialogue → Autonomy → Reflection"
+                     ]
+    },
+    {
+        "tools":  [
+                      {
+                          "debrief":  [
+                                          "（關鍵提問）",
+                                          "引導者會問：",
+                                          "問題1",
+                                          "第一輪當中你說的三個東西：",
+                                          "你真的看到這些東西了嗎？",
+                                          "這提醒大家：",
+                                          "人會把「合理推測」當成「事實」。",
+                                          "問題2",
+                                          "第二輪你加入的推測：",
+                                          "事實真的會是這樣嗎？",
+                                          "建議改良",
+                                          "可以加入 Reality Check：",
+                                          "請中央的學員說明：",
+                                          "哪些猜測正確",
+                                          "哪些猜測錯誤"
+                                      ],
+                          "num":  1,
+                          "process":  [
+                                          "Step 1",
+                                          "請所有學員圍成一個圓圈。",
+                                          "Step 2",
+                                          "邀請一位學員站到圓圈中央，擺出一個自選姿勢。",
+                                          "例如曾經出現的情境：",
+                                          "一位學員直接躺在地板上。",
+                                          "Step 3 第一輪：純觀察",
+                                          "引導者請大家依序快速發言：",
+                                          "每個人說出 三個看到的東西。",
+                                          "例如：",
+                                          "一副眼鏡一雙鞋子一件洋裝",
+                                          "引導者刻意營造 快速節奏與壓力。",
+                                          "Step 4 第二輪：加入推測",
+                                          "第二輪發言時，請大家 加入推論與猜測。",
+                                          "例如：",
+                                          "我看到他戴太陽眼鏡，是因為今天太陽很大我看到他穿橘色鞋子，是因為搭配橘色洋裝"
+                                      ],
+                          "name":  "觀察與腦補（Observation vs Interpretation）",
+                          "type":  "認知覺察",
+                          "purpose":  [
+                                          "讓學員體驗「觀察不等於事實」",
+                                          "看見人在壓力下如何快速腦補資訊",
+                                          "建立 Observation 與 Interpretation 的區別"
+                                      ],
+                          "insights":  [
+                                           "Observation is not Interpretation。",
+                                           "觀察不是詮釋。",
+                                           "人常常用不完整的資訊做判斷，並把推測當成事實。"
+                                       ],
+                          "tips":  [
+
+                                   ]
+                      },
+                      {
+                          "debrief":  [
+
+                                      ],
+                          "num":  2,
+                          "process":  [
+                                          "Step 1",
+                                          "學員兩人一組。",
+                                          "Step 2",
+                                          "互相訪談。",
+                                          "請對方提出：",
+                                          "如果用這個概念做教練對話，你會問什麼問題？",
+                                          "Step 3",
+                                          "每位學員會帶著 三張便利貼：",
+                                          "一張 Curiosity 問句",
+                                          "一張 Compassion 問句",
+                                          "一張 Courage 問句",
+                                          "Step 4",
+                                          "學員把便利貼貼到對應海報上。",
+                                          "牆上會形成一面 Question Wall。"
+                                      ],
+                          "name":  "Powerful Question 問句牆",
+                          "type":  "提問語言",
+                          "purpose":  [
+                                          "讓學員理解什麼是 Powerful Question",
+                                          "建立教練提問的三種品質",
+                                          "建立群體的問句語料庫",
+                                          "三種提問品質",
+                                          "教練問題通常包含三個核心品質：",
+                                          "品質",
+                                          "說明",
+                                          "Curiosity",
+                                          "好奇與探索",
+                                          "Compassion",
+                                          "同理與理解",
+                                          "Courage",
+                                          "勇氣與行動",
+                                          "準備",
+                                          "在牆上貼三張海報：",
+                                          "Curiosity",
+                                          "Compassion",
+                                          "Courage",
+                                          "並準備三種顏色便利貼。"
+                                      ],
+                          "insights":  [
+                                           "透過群體共創，",
+                                           "學員會快速累積 大量高品質問題範例。"
+                                       ],
+                          "tips":  [
+                                       "鼓勵問題具備：",
+                                       "開放式",
+                                       "不帶評價",
+                                       "引發思考"
+                                   ]
+                      },
+                      {
+                          "debrief":  [
+
+                                      ],
+                          "num":  3,
+                          "process":  [
+
+                                      ],
+                          "name":  "三人教練對話練習（Coaching Practicum）",
+                          "type":  "技能實作",
+                          "purpose":  [
+                                          "讓學員進入 完整教練對話練習。",
+                                          "示範流程",
+                                          "在小組練習前，引導者先進行示範。",
+                                          "Step 1",
+                                          "邀請一位學員擔任 Coachee（被教練者）",
+                                          "Step 2",
+                                          "邀請另一位學員擔任 Coach（教練）",
+                                          "Step 3",
+                                          "進行約 15分鐘教練對話示範",
+                                          "Step 4",
+                                          "示範過程中，引導者會舉起三張海報之一：",
+                                          "Curiosity",
+                                          "Compassion",
+                                          "Courage",
+                                          "提示教練使用該品質提問。",
+                                          "這是一種 Scaffolding（學習支架）。",
+                                          "小組練習",
+                                          "接著學員分成 三人一組：",
+                                          "角色",
+                                          "任務",
+                                          "Coach",
+                                          "提問與對話",
+                                          "Coachee",
+                                          "提供議題",
+                                          "Observer",
+                                          "觀察與回饋",
+                                          "每一輪可以輪流角色。",
+                                          "Observer 通常觀察",
+                                          "問題是否開放",
+                                          "是否給建議",
+                                          "是否帶有評價",
+                                          "是否允許沉默",
+                                          "是否真正聆聽",
+                                          "文化差異觀察",
+                                          "對未受教練訓練的人而言，",
+                                          "很多人會期待：",
+                                          "「請直接告訴我怎麼做。」",
+                                          "因此在亞洲文化中，",
+                                          "教練式提問有時會被理解為：",
+                                          "沒有提供解決方案。",
+                                          "因此在實務中通常需要先說明：",
+                                          "教練對話的方式與目的。"
+                                      ],
+                          "insights":  [
+
+                                       ],
+                          "tips":  [
+
+                                   ]
+                      },
+                      {
+                          "debrief":  [
+
+                                      ],
+                          "num":  4,
+                          "process":  [
+
+                                      ],
+                          "name":  "呼吸冥想（Centering Practice）",
+                          "type":  "教練狀態",
+                          "purpose":  [
+                                          "培養教練能力中非常重要的一個品質：",
+                                          "Presence（臨在）",
+                                          "冥想的作用",
+                                          "在教練訓練中，冥想常用來：",
+                                          "建立專注",
+                                          "提升覺察",
+                                          "降低焦慮",
+                                          "提高聆聽能力",
+                                          "練習方式",
+                                          "活動中會搭配不同的呼吸練習，例如：",
+                                          "慢速呼吸",
+                                          "專注呼吸",
+                                          "身體掃描"
+                                      ],
+                          "insights":  [
+                                           "好的教練對話，",
+                                           "往往來自 安靜與覺察的狀態。"
+                                       ],
+                          "tips":  [
+                                       "冥想並不是宗教活動，",
+                                       "而是幫助學員：",
+                                       "回到當下",
+                                       "看見自己的情緒與想法"
+                                   ]
+                      }
+                  ],
+        "title":  "Coaching Skills 與教練對話練習",
+        "num":  4,
+        "overview":  [
+                         "第四天的課程設計重點是：",
+                         "建立教練式對話（Coaching Conversation）的能力。",
+                         "在前幾天建立了：",
+                         "心理安全",
+                         "自我覺察",
+                         "偏見覺察",
+                         "之後，第四天開始進入 實際對話技能的練習。",
+                         "學員會透過體驗式活動理解：",
+                         "Observation vs Interpretation（觀察與詮釋）",
+                         "Powerful Questions（強而有力的提問）",
+                         "Coaching Dialogue（教練對話）",
+                         "Coaching Presence（教練狀態）",
+                         "整體學習節奏：",
+                         "Perception Awareness → Question Language → Coaching Practice → Presence"
+                     ]
+    },
+    {
+        "tools":  [
+
+                  ],
+        "title":  "流程工具總覽",
+        "num":  4,
+        "overview":  [
+                         "工具",
+                         "類型",
+                         "Observation vs Interpretation",
+                         "認知覺察",
+                         "Powerful Question Wall",
+                         "提問語言",
+                         "Coaching Practicum",
+                         "技能練習",
+                         "Centering Practice",
+                         "教練狀態"
+                     ]
+    },
+    {
+        "tools":  [
+
+                  ],
+        "title":  "共 4 個流程工具",
+        "num":  4,
+        "overview":  [
+
+                     ]
+    },
+    {
+        "tools":  [
+
+                  ],
+        "title":  "整體學習邏輯",
+        "num":  4,
+        "overview":  [
+                         "第四天的課程結構可以理解為：",
+                         "認知覺察 → 提問語言 → 對話練習 → 教練狀態",
+                         "或用能力發展來看：",
+                         "Awareness → Language → Practice → Presence",
+                         "以下是 Day 5（第五天）完整內容，格式與 Day 1–Day 4 相同，你可以 直接貼到 Word 的 Day 5 章節。"
+                     ]
+    },
+    {
+        "tools":  [
+                      {
+                          "debrief":  [
+
+                                      ],
+                          "num":  1,
+                          "process":  [
+
+                                      ],
+                          "name":  "Brain Arrival Game（認知暖身）",
+                          "type":  "認知暖身",
+                          "purpose":  [
+                                          "喚醒注意力與能量",
+                                          "讓大腦快速進入課程狀態",
+                                          "建立輕鬆活躍的氛圍",
+                                          "常見形式",
+                                          "引導者會設計一些需要快速反應的小遊戲，例如：",
+                                          "Red / Blue 反應遊戲",
+                                          "當聽到 Red 時做 Blue 的動作當聽到 Blue 時做 Red 的動作",
+                                          "Yes / No 反向回答",
+                                          "被問問題時必須回答相反答案。",
+                                          "例如：",
+                                          "「你今天累嗎？」必須回答 Yes 或 No 的相反答案",
+                                          "動作指令遊戲",
+                                          "聽到某個指令時做不同的動作。"
+                                      ],
+                          "insights":  [
+                                           "短時間的認知遊戲可以：",
+                                           "活化大腦",
+                                           "提高專注度",
+                                           "快速提升團體氛圍"
+                                       ],
+                          "tips":  [
+                                       "這類遊戲的重點不是競爭，而是：",
+                                       "提升注意力",
+                                       "提升團體能量",
+                                       "讓大家進入互動狀態"
+                                   ]
+                      },
+                      {
+                          "debrief":  [
+
+                                      ],
+                          "num":  2,
+                          "process":  [
+                                          "在牆上貼出幾張 課程主題海報。",
+                                          "每張海報代表一個重要概念或主題。",
+                                          "學員可以在海報上補充相關資源，例如：",
+                                          "書籍",
+                                          "文章",
+                                          "網站",
+                                          "組織",
+                                          "工具或方法",
+                                          "學員自由走動閱讀彼此補充的內容。"
+                                      ],
+                          "name":  "Learning Integration Posters（學習整合海報）",
+                          "type":  "知識整合",
+                          "purpose":  [
+                                          "整合課程中的重要知識",
+                                          "讓學員補充延伸資源",
+                                          "形成群體知識庫"
+                                      ],
+                          "insights":  [
+                                           "透過這個活動：",
+                                           "個人的知識會被轉化為 群體資產。"
+                                       ],
+                          "tips":  [
+                                       "引導者可以鼓勵學員：",
+                                       "分享對自己最有幫助的資源",
+                                       "連結課程概念與實際世界"
+                                   ]
+                      },
+                      {
+                          "debrief":  [
+
+                                      ],
+                          "num":  3,
+                          "process":  [
+                                          "在牆上貼一張大型海報，寫上：",
+                                          "ASK",
+                                          "學員在便利貼上寫下：",
+                                          "自己需要幫助的事情",
+                                          "想找人合作的主題",
+                                          "想討論的問題",
+                                          "若其他學員能提供幫助，可以：",
+                                          "留下名字",
+                                          "留下聯絡方式"
+                                      ],
+                          "name":  "ASK Wall（互助牆）",
+                          "type":  "社群連結",
+                          "purpose":  [
+                                          "建立課程結束後的支持網絡",
+                                          "鼓勵學員彼此合作",
+                                          "延續社群關係"
+                                      ],
+                          "insights":  [
+                                           "這個工具能促進：",
+                                           "社群支持",
+                                           "合作關係",
+                                           "長期連結"
+                                       ],
+                          "tips":  [
+                                       "提醒學員：",
+                                       "ASK 不只是求助，",
+                                       "也是建立合作機會。"
+                                   ]
+                      },
+                      {
+                          "debrief":  [
+
+                                      ],
+                          "num":  4,
+                          "process":  [
+                                          "發給每位學員：",
+                                          "一張 明信片",
+                                          "一個 信封",
+                                          "請學員以：",
+                                          "「六個月後的自己」",
+                                          "寫信給現在的自己。",
+                                          "內容可以包含",
+                                          "自己如何應用了課程學到的內容",
+                                          "工作或生活有哪些改變",
+                                          "對現在自己的鼓勵",
+                                          "寫完後放入信封。",
+                                          "主辦單位在未來某個時間 寄回給學員。",
+                                          "設計考量",
+                                          "信封可以：",
+                                          "保護隱私",
+                                          "方便未來寄送"
+                                      ],
+                          "name":  "Future Self Postcard（未來自己明信片）",
+                          "type":  "學習轉化",
+                          "purpose":  [
+                                          "促進學習轉化",
+                                          "讓學員思考未來如何應用所學",
+                                          "建立長期提醒機制"
+                                      ],
+                          "insights":  [
+                                           "這是一種常見的 Learning Transfer 工具。",
+                                           "透過未來視角，",
+                                           "可以強化行動承諾與記憶。"
+                                       ],
+                          "tips":  [
+
+                                   ]
+                      }
+                  ],
+        "title":  "Integration 與 Closing",
+        "num":  5,
+        "overview":  [
+                         "第五天的課程重點是 整合學習與建立未來連結。",
+                         "與前幾天不同，最後一天不再加入新的技巧，而是幫助學員：",
+                         "回顧整個課程的重要學習",
+                         "整合不同的概念與經驗",
+                         "建立彼此的支持網絡",
+                         "思考未來如何實踐",
+                         "因此這一天的活動多屬於 Integration Tools（整合型工具）。",
+                         "整體學習節奏：",
+                         "Energy Activation → Knowledge Integration → Community Support → Future Commitment"
+                     ]
+    },
+    {
+        "tools":  [
+
+                  ],
+        "title":  "流程工具總覽",
+        "num":  5,
+        "overview":  [
+                         "工具",
+                         "類型",
+                         "Brain Arrival Game",
+                         "認知暖身",
+                         "Learning Integration Posters",
+                         "知識整合",
+                         "ASK Wall",
+                         "社群連結",
+                         "Future Self Postcard",
+                         "學習轉化"
+                     ]
+    },
+    {
+        "tools":  [
+
+                  ],
+        "title":  "共 4 個流程工具",
+        "num":  5,
+        "overview":  [
+
+                     ]
+    },
+    {
+        "tools":  [
+
+                  ],
+        "title":  "整體學習邏輯",
+        "num":  5,
+        "overview":  [
+                         "第五天的課程設計可以理解為三個階段：",
+                         "啟動能量",
+                         "Brain Arrival Game",
+                         "↓",
+                         "整合學習",
+                         "Learning Integration Posters",
+                         "↓",
+                         "延續社群與行動",
+                         "ASK WallFuture Self Postcard",
+                         "五天課程能力曲線（總覽）",
+                         "Day",
+                         "能力主題"
+                     ]
+    },
+    {
+        "tools":  [
+
+                  ],
+        "title":  "",
+        "num":  1,
+        "overview":  [
+                         "Psychological Safety"
+                     ]
+    },
+    {
+        "tools":  [
+
+                  ],
+        "title":  "",
+        "num":  2,
+        "overview":  [
+                         "Presence 與 Connection"
+                     ]
+    },
+    {
+        "tools":  [
+
+                  ],
+        "title":  "",
+        "num":  3,
+        "overview":  [
+                         "Bias 覺察與 Reflection"
+                     ]
+    },
+    {
+        "tools":  [
+
+                  ],
+        "title":  "",
+        "num":  4,
+        "overview":  [
+                         "Coaching Skills Practice"
+                     ]
+    },
+    {
+        "tools":  [
+
+                  ],
+        "title":  "",
+        "num":  5,
+        "overview":  [
+                         "Integration 與 Commitment",
+                         "整體課程是一條典型的 體驗式學習曲線：",
+                         "Safety → Awareness → Reflection → Practice → Integration"
+                     ]
+    }
+];
+        const MICROSOFT_CASE_RAW = "一、Microsoft Case Study（中文完整翻譯）\r\n案例：Microsoft 的文化轉型\r\n到了 2014 年，Microsoft 仍然是全球最有影響力的科技公司之一，但在組織內部，卻出現了一種「卡住」的感覺。\r\n多年來，公司以以下文化著稱：\r\n嚴謹的理性思維 \r\n頂尖的技術人才 \r\n強調「誰是對的」的內部競爭 \r\n績效評估是比較式的。團隊彼此競爭資源。專業代表地位。\r\n即使公司公開鼓勵創新，錯誤仍然會被懲罰。\r\n\r\n外部環境正在快速變化：\r\n雲端運算正在改變商業模式 \r\n競爭者行動更快 \r\n客戶開始需要「合作夥伴」，而不只是產品 \r\n許多領導者開始意識到：\r\n過去帶來成功的文化，如今反而限制了公司發展。\r\n\r\n中階主管的困境\r\n中階主管感到夾在中間。\r\n他們被要求：\r\n鼓勵實驗 \r\n建立心理安全感 \r\n但同時仍然需要：\r\n達成季度績效 \r\n他們被鼓勵重視「學習」，但評估機制仍然強調：\r\n可預測性 \r\n控制 \r\n\r\n他們開始產生疑問：\r\n如果我讓團隊放慢來學習，會不會被懲罰？ \r\n如果我承認不確定性，會不會影響地位？ \r\n在這裡，「脆弱」到底安不安全？ \r\n\r\n組織中的情緒\r\n在各個團隊中，存在著情緒訊號，但沒有被說出來：\r\n害怕變得沒有價值 \r\n對自己沒有跟上變化感到羞愧 \r\n當專業被質疑時的防衛 \r\n對過去被認可的身份感到失落 \r\n這些情緒沒有被表達，而是透過以下方式出現：\r\n過度工作 \r\n過度控管 \r\n沉默 \r\n抵抗改變 \r\n\r\n一個具體場景\r\n某個產品團隊正在重新設計雲端平台。\r\n一位初級工程師提出一個新想法，需要實驗，也可能延遲發布。\r\n資深工程師回應：\r\n「這不是這個系統的運作方式，我們以前試過。」\r\n主管注意到緊張氣氛，但選擇繼續推進會議。\r\n\r\n結果：\r\n初級工程師退縮 \r\n資深工程師覺得自己是對的 \r\n主管鬆一口氣，但隱約覺得不對 \r\n沒有人說出剛剛發生了什麼\r\n\r\n組織層級的問題\r\n類似的情境在整個組織中反覆出現。\r\n雖然：\r\n領導者談 growth mindset \r\n員工參加工作坊 \r\n但在高壓時刻：\r\n控制 \r\n確定性 \r\n沉默 \r\n績效優先 \r\n仍然出現。\r\n\r\n核心問題\r\n我們如何幫助人們，在當下以不同方式面對恐懼、失敗與身份，讓真正的學習發生？\r\n\r\n二、對應問題（英文）\r\n\r\n1️⃣ What I See\r\nWhat do you observe in this situation?\r\n\r\n2️⃣ So What\r\nWho is affected and how?\r\n\r\n3️⃣ I See This\r\nWhere do you see this pattern in your own work?\r\n\r\n4️⃣ Now What\r\nWhat is one emotionally agile move you could take?\r\n\r\n5️⃣ Speakable Line\r\nWhat could you say in that moment?\r\n\r\n6️⃣ Reflection（核心問題）\r\nHow do we help people relate differently to fear, failure, and identity in the moment?\r\n\r\n三、建議英文回答（可直接用）\r\n\r\n🔹1. What I See（觀察）\r\nI see that the senior engineer quickly shuts down the idea, and the conversation moves on.\r\nI also see that the junior engineer stops speaking, and no one names what just happened.\r\n\r\n🔹2. So What（影響）\r\nThe junior engineer withdraws, and fewer voices are heard.\r\nAs a result, the idea is not explored, and the team loses a chance to learn.\r\n\r\n🔹3. I See This（連回自己）\r\nI see a similar pattern in my own work, where ideas are challenged quickly and people may withdraw.\r\nAnd the team often misses an opportunity to explore different perspectives.\r\n\r\n🔹4. Now What（行動）\r\nOne emotionally agile move would be to pause the conversation and invite the team to explore the idea before moving on.\r\n\r\n🔹5. Speakable Line（最關鍵）\r\n👉（推薦用這句）\r\nI’m noticing the idea was challenged quickly.The impact is that we might miss a learning opportunity.Before we move on, could we take a minute to explore it so we support collaboration?\r\n\r\n🔹6. 高階洞察（加分用）\r\nThe issue is not a lack of knowledge, but how people respond to fear and identity in the moment.\r\nWhen emotions are not named, they don’t disappear — they show up through behavior.\r\n";
+        const MAYA_CASE_RAW = "Maya Case Study\r\nMaya is a director at a mid-sized technology company that has grown rapidly\r\nthrough acquisitions. The organization is experiencing sustained pressure:\r\nAI-driven product launches, ongoing restructuring, investor scrutiny around\r\nefficiency, and repeated internal messaging about \"doing more with less.\"\r\n\r\nMaya leads several cross-functional teams spread across time zones. Her role\r\nnow involves constant decision-making under uncertainty, frequent executive\r\nupdates, and managing tension between speed and quality.\r\n\r\nMaya is widely regarded as smart, reliable, and decisive. She is often\r\ndescribed by peers as \"calm under pressure.\" At the same time, in recent\r\nmonths, several signs have emerged:\r\n\r\n. Team meetings have become quieter with fewer people engaging in real\r\ntime.\r\n· Junior leaders increasingly escalate issues privately rather than raising\r\nthem in group settings.\r\n· After meetings, side conversations often reveal confusion or frustration\r\nthat was not voiced in the room.\r\n\r\nMaya also notices that she is becoming shorter in meetings and less patient\r\nwith questions she would previously have welcomed.\r\n\r\nIn one-on-one conversations with her coach, Maya shares that she feels\r\ntense, mentally overloaded and persistently behind. She describes waking\r\nearly with racing thoughts. Frustrated by these feelings, she worries that\r\nshowing uncertainty would undermine her authority. She says:\r\n\r\n· \"If I slow down, everything bottlenecks.\"\r\n· \"I feel a lot of pressure, but I\u0027m doing my job\r\nbadly if I pass that pressure on to the people\r\nworking above or below me.\"\r\n. \"People want clarity from me.\"\r\n\r\nPart A：Maya Case\r\n1. What do you see as the key emotional, cognitive, relational, and organizational dynamics at play in this situation?\r\nMaya seems tense, overloaded, and afraid that uncertainty may weaken her authority.\r\n\r\nShe may believe that a good leader must be clear, fast, and in control.\r\n\r\nThe team is becoming quieter and raising issues privately.\r\n\r\nThe organization’s pressure for speed, efficiency, and “doing more with less” is making this pattern stronger.\r\n2. Where do you notice possible hooks for Maya, such as thoughts, emotions, assumptions, collapsed nuance, or self-stories?\r\nMaya may be hooked by thoughts like: “If I slow down, everything bottlenecks,” “I must absorb pressure,” and “People need clarity from me.”\r\n\r\nThese stories may make her see slowing down as failure, uncertainty as weakness, and asking for help as not doing her job well.\r\n3. What function might these hooks be serving and how might they be shaping her behavior and impact on others?\r\nThese hooks may help Maya feel responsible, reliable, and in control.\r\n\r\nThey may also help her protect others from pressure.\r\n\r\nBut they can make her faster, shorter, and less patient.\r\n\r\nThe team may then feel less safe to speak up, so concerns move into private conversations.\r\n4. If you were supporting Maya in your professional role, what would you do first?\r\nPrompt details:\r\nWhere you would focus your attention initially\r\nWhat you would prioritize in the first conversation or intervention\r\nWhy this feels like the most effective starting point right now\r\nI would first help Maya notice her own internal experience: body signals, emotions, thoughts, and hooks when uncertainty or questions appear.\r\n\r\nI would not start with leadership tips.\r\n\r\nThis is the best starting point because her inner story is shaping how she shows up with the team.\r\n5. What is this first move designed to change?\r\nPrompt examples:\r\nMaya’s relationship to her internal experience\r\nHow others may experience her presence, communication, or decision-making\r\nWhat becomes safer, clearer, or more possible in her leadership\r\nThis move is designed to help Maya see pressure and uncertainty as data, not failure.\r\n\r\nWith more space from her hooks, she may respond with more openness and less control.\r\n\r\nThis can make it safer for the team to raise questions, risks, and confusion earlier.\r\n6. Strong Emotional Agility practice often involves more than one plausible point of entry. What would this second approach or intervention path look like?\r\nPrompt details:\r\nWhere you would focus your attention instead\r\nWhat different move, response, or intervention you might make\r\nWhy this would also be a valid starting point in this case\r\nWhat this approach or intervention would be intended to shift, change, or make possible\r\nA second starting point could be the team dynamic, not only Maya’s individual experience.\r\n\r\nI would focus on why meetings are becoming quiet and why concerns are moving into private conversations.\r\n\r\nThe intervention could be a facilitated team conversation about how the team raises questions, risks, and confusion under pressure.\r\n\r\nThis is also valid because the problem is already showing up in the team system.\r\n\r\nThe goal would be to make the team space safer and clearer, so people can speak up earlier and share responsibility for clarity.\r\nTeam-Level Microskills Section\r\nAvailable Emotional Agility microskills\r\nA. Being RealLeading in a way that acknowledges human experience with honesty, courage, and appropriate boundaries.\r\nB. Encourage AutonomyInviting shared ownership and participation in decision-making to build trust and agency.\r\nC. Going To and Through EmotionsAllowing emotions to be acknowledged and processed rather than avoided or prematurely resolved.\r\nD. Emotional Labor vs HonestyDistinguishing between managing emotions to appear “professional” and creating space for genuine emotional expression.\r\nE. Empathetic LeadershipLeading with empathy by understanding emotional experience and creating conditions for psychological safety.\r\nF. What Happens When We Avoid Tough Emotions at WorkRecognizing how emotional avoidance and forced positivity undermine trust, inclusion, and effectiveness.\r\nG. You Are the SkyHelping people create distance from emotions so they can respond thoughtfully rather than reactively.\r\nH. Create a Culture of Emotional HonestyBuilding norms that allow emotions to be named and discussed constructively at work.\r\nI. How to Circuit-Break Cognitive NarrowingInterrupting rigid, threat-driven thinking that limits perspective, voice, and collaboration.\r\nJ. Intention vs RealityExamining the gap between what leaders intend and how their behavior is actually experienced by others.\r\nK. Trust the CompassUsing values and purpose to guide decisions when clarity, certainty, or complete information is unavailable.\r\nL. ResilienceAdapting effectively to challenge while also working to shape healthier systems and conditions.\r\nM. Emotionally Agile LeadershipLeading in a way that integrates emotional awareness, values, and effective action.\r\nN. What Is a Hook?Recognizing patterns of thoughts or behaviors that keep individuals or teams stuck.\r\nO. The Tyranny of PositivityNoticing when pressure to stay positive suppresses important emotional signals and conversations.\r\nP. Create Psychological Safety on Your TeamCreating conditions where people feel safe to speak up, ask questions, and take interpersonal risks.\r\n7. First selected microskill\r\nSelected option\r\nJ. Intention vs RealityExamining the gap between what leaders intend and how their behavior is actually experienced by others.\r\nWhy did you choose this skill for the situation?\r\nI chose Intention vs Reality because Maya may have good intentions, but her impact on the team may be different from what she wants. She may want to provide clarity and protect people from pressure, but the team may experience her as rushed or less open. This skill helps her look at that gap without blaming herself or the team.\r\nHow would you ideally apply it?\r\nI would apply it first in a coaching conversation with Maya. I would invite her to reflect on what she intends to provide for the team, and how the team may actually experience her behavior. If appropriate, I might also help her gather simple feedback from the team in a safe way.\r\nWhat shift, change, or outcome would it be intended to support?\r\nThis skill would help Maya become more curious about her impact. It may help her adjust small behaviors, such as pausing more, inviting questions, or checking how her message is landing. The goal is better alignment between her intention and how the team experiences her leadership.\r\n8. Second selected microskill\r\nSelected option\r\nB. Encourage AutonomyInviting shared ownership and participation in decision-making to build trust and agency.\r\nWhy did you choose this skill for the situation?\r\nI chose Encourage Autonomy because Maya seems to carry too much responsibility for clarity and decisions. The team is becoming quieter and escalating issues privately. This skill can help the team take more ownership instead of waiting for Maya to provide all the answers.\r\nHow would you ideally apply it?\r\nI would help Maya and the team clarify where shared ownership is possible. For example, what decisions need Maya, what decisions the team can make, and when risks should be raised early. I would also encourage Maya to ask, “What do you recommend?” before giving her own answer.\r\nWhat shift, change, or outcome would it be intended to support?\r\nThis skill would help shift the team from depending on Maya to sharing more responsibility. Team members may bring options, risks, and recommendations earlier. This could reduce the bottleneck around Maya and build more trust, agency, and participation in the team.\r\n9. What observable changes would you look for in team behavior, communication, or decision-making?\r\nI would look for more people speaking up in meetings, asking questions earlier, and raising risks in the group space. I would also look for fewer private escalations after meetings. In decision-making, I would look for team members bringing options and recommendations, not only problems for Maya to solve.\r\n10. What would signal movement toward greater trust, openness, effectiveness, or values-aligned performance?\r\nA good signal would be that people can say, “I am not clear,” “I see a risk,” or “I have a different view” in the meeting. It would also be a sign if Maya pauses, invites input, and the team responds with useful information.\r\n11. What could be one sign of meaningful progress?\r\nOne sign of meaningful progress would be a team member raising an important concern during the meeting, and Maya responding with curiosity instead of impatience. If others continue to speak up after that, it shows the team space is becoming safer.\r\n12. What is one indicator that would suggest the approach is not working as intended and may need to be paused, adjusted, or recalibrated?\r\nOne warning sign would be if people become even quieter, or if private escalation increases. Another sign would be if Maya feels blamed and becomes more defensive or controlling. In that case, I would pause, rebuild safety, and clarify the purpose again.\r\n\r\nPart B：The Responsible Application of Emotional Agility\r\nOpening Description\r\nThis section focuses on ethical judgment, professional boundaries, and the responsible application of Emotional Agility. We are interested in how you think about responsibility, limitation, and appropriate use of your role.\r\n1. As you consider the case from the perspective of your actual professional role, qualifications, experience, and scope as you currently practice, please answer the following:\r\nWhat could you appropriately work with?\r\nI could work with Maya and the team on awareness, reflection, communication, leadership behavior, and team practices. I can help Maya notice her emotions, thoughts, hooks, and values. I can also facilitate team conversations about psychological safety, shared ownership, decision-making, and how the team raises risks or confusion.\r\nWhat would you avoid taking on?\r\nI would avoid taking on the role of a therapist or clinician. I would not diagnose Maya’s stress, anxiety, sleep issues, or emotional state. I would also avoid pushing her to disclose more than she is ready to share, or using Emotional Agility to force a specific outcome.\r\nAre there any points at which you would refer, escalate, or collaborate?\r\nYes. If Maya’s stress, anxiety, or sleep disruption seemed severe or persistent, I would encourage appropriate professional support. If there were signs of burnout, safety risk, harassment, or serious organizational harm, I would not handle it alone. I might collaborate with HR, senior leaders, or other support roles when appropriate.\r\nWhy do these boundaries matter?\r\nThese boundaries matter because Emotional Agility can touch sensitive emotions, identity, stress, and power dynamics. Clear boundaries help protect Maya, the team, and myself. My role is to support awareness, choice, and values-aligned action, not to diagnose, treat, or rescue people.\r\n2. What principles would guide your responsible use of Emotional Agility in your professional context?\r\nPrompt details\r\nPlease describe:\r\n\r\n➡️ What responsible stewardship would look like\r\n➡️ One way misuse, overreach, or misrepresentation could undermine trust, safety, or effectiveness\r\n➡️ How you would approach working within appropriate guidance and boundaries\r\nAnswer\r\nIn my professional context, I would use Emotional Agility with respect for the person, the context, and the limits of my role.\r\n\r\nResponsible stewardship means I would not use it as a script or as a way to make people talk about emotions before they are ready. I would use it to support noticing, reflection, choice, and values-aligned action.\r\n\r\nOne misuse would be treating Emotional Agility as if it can solve all emotional or psychological issues. This could reduce trust, especially if people feel pushed to process personal emotions in a work setting.\r\n\r\nI would stay within my role as a coach, facilitator, and consultant. If something seems beyond my scope, I would slow down, clarify boundaries, and suggest appropriate support or collaboration.\r\nPart C：Evidence, Research, and Integration\r\nOpening Description\r\nWe recognize that participants come from a range of professional backgrounds and practice contexts. In this section, we are interested in how you apply research-informed Emotional Agility principles in your judgement and practice. This includes how you make sense of the Maya case and how you connect this work to your own context.\r\n\r\nThis section focuses on how Emotional Agility is grounded in psychological research and behavioral science. You are not being asked to cite studies or recall terminology. We are interested in how research-informed principles shape your judgment, reasoning, and choices in practice.\r\n1. Explain why treating emotions as data rather than directives matters in this context.\r\nTreating emotions as data matters because Maya’s pressure and frustration may contain important information, but they should not automatically decide her actions. Her emotions may show that she cares about responsibility, quality, and trust. But if she follows them as directives, she may react by moving faster, controlling more, or becoming less patient.\r\n2. Describe one risk if emotions are ignored, dismissed, or suppressed.\r\nOne risk is that important signals stay hidden. If Maya ignores her stress, she may keep pushing herself and the team without noticing the cost. The team may also learn that confusion or concern should not be spoken about. This can reduce trust and make problems appear later.\r\n3. Describe one risk if emotions are over-privileged or treated as instructions.\r\nOne risk is reactive decision-making. If Maya treats anxiety as an instruction, she may think she must control more or move faster. If she treats frustration as an instruction, she may shut down questions. Emotions are useful, but they are not always the full truth.\r\n4. Maya expresses a desire to lead with trust and psychological safety while operating in a high-pressure, performance-driven environment.\r\nPrompt details:\r\nUsing research-informed thinking about values:\r\n\r\n➡️ Explain how values function as a stabilizing force under pressure\r\n➡️ Describe how values can guide action even when certainty or clarity is low\r\n➡️ Identify one common misconception about values in the workplace that could undermine effectiveness\r\nAnswer\r\nValues can be stabilizing under pressure because they give direction when emotions, urgency, and uncertainty are high. For Maya, values such as trust, responsibility, honesty, and care can help her choose how to lead, instead of only reacting to pressure.\r\n\r\nValues can guide action even when clarity is low. For example, if Maya values psychological safety, she can invite questions and risks earlier, even if she does not have all the answers yet.\r\n\r\nOne misconception is that values are “soft” or separate from performance. In my view, values support effectiveness when they become real behaviors, such as better conversations, clearer decisions, and more shared responsibility.\r\n5. Explain why individual insight may be a valuable starting point, but is not by itself enough to produce sustained team or cultural change.\r\nIndividual insight is useful because Maya needs to notice her emotions, hooks, and values. But it is not enough if the team system stays the same. If meetings still reward speed over honesty, or people still feel unsafe to speak up, the old pattern may return.\r\n6. Describe how emotionally agile leadership can influence systems, not just individuals.\r\nEmotionally agile leadership can change team norms. If Maya names uncertainty, invites questions, and treats emotions as data, the team may learn that speaking up is responsible behavior. This can shift not only Maya’s behavior, but also how the team works together.\r\n7. Name one condition that must be present for individual change to translate into collective impact, and explain how Emotional Agility can help create or strengthen that condition.\r\nOne key condition is psychological safety. If people do not feel safe to raise questions or risks, Maya’s insight will not become team change. Emotional Agility can help by making emotions, concerns, and different views easier to name and discuss.\r\n8. Explain how identity-based narratives can become fused with performance expectations.\r\nIdentity stories become fused with performance when “what I do” becomes “who I must be.” For Maya, being reliable and calm may become a rule: a good leader must absorb pressure and provide certainty.\r\n9. Describe how this kind of fusion can narrow behavior, choice, or leadership response.\r\nThis can narrow Maya’s choices. She may feel she must move fast, stay in control, and hide uncertainty. This makes it harder to pause, ask for help, or let the team share responsibility.\r\n10. Explain one way Emotional Agility helps create greater flexibility without reducing accountability.\r\nEmotional Agility helps Maya step back from the story: “I am having the thought that I must absorb all pressure.” She can still be accountable, but choose a more flexible response, such as inviting the team to co-create clarity.\r\n11. How would you describe Emotional Agility to someone encountering it for the first time?\r\nEmotional Agility is the ability to stay open to our emotions and thoughts in moments of uncertainty, without being controlled by them, so we can choose actions that align with our values.\r\n12. Identify one context in your own work in which Emotional Agility would be especially relevant, and briefly explain why.\r\nOne context is my work as an enterprise agile coach and professional facilitator.\r\n\r\nAt the leadership level, I often support leaders who make decisions under high pressure and uncertainty. Beyond giving consulting advice, I would use Emotional Agility as a coaching approach to help them notice emotions, hooks, and values before choosing action.\r\n\r\nAt the team level, I would use Emotional Agility in retrospectives. It can help team members treat emotions as data, understand what those emotions are pointing to, and choose small improvements that are aligned with shared values.\r\n13. Describe one way you would hope this work could shape how you lead, support, teach, coach, or influence others in that context.\r\nI hope this work helps me become less focused only on giving solutions, and more able to create space for deeper awareness and choice.\r\n\r\nWhen I support leaders or teams, I want to help them slow down, notice emotions as data, name the stories or hooks behind their reactions, and reconnect with values before deciding what to do next.\r\n\r\nThis would shape my coaching and facilitation by making my work more reflective, humane, and values-based, while still supporting practical action and improvement.\r\n";
+    </script>
+
+    <!-- MAIN APP SCRIPT -->
+    <script>
+        let selectedDayNum = 1;
+        let plannerItems = [];
+
+        // Parse raw texts into usable segments
+        function parseMicrosoftCase(rawText) {
+            const sections = rawText.split('\n');
+            let story = [];
+            let qa = [];
+            let currentMode = 'story'; // story, qa
+            
+            let qItem = null;
+            
+            for (let i = 0; i < sections.length; i++) {
+                const line = sections[i].trim();
+                if (!line) continue;
+                
+                if (line.includes('二、對應問題') || line.includes('2️⃣') || line.includes('1️⃣')) {
+                    currentMode = 'qa';
+                }
+                
+                if (currentMode === 'story') {
+                    if (line.includes('一、Microsoft Case Study') || line.includes('案例：')) {
+                        story.push(`<h3>${line}</h3>`);
+                    } else if (line.includes('到了') || line.includes('多年來') || line.includes('外部環境') || line.includes('中階主管') || line.includes('組織中的情緒') || line.includes('一個具體場景') || line.includes('組織層級') || line.includes('核心問題')) {
+                        story.push(`<h4>${line}</h4>`);
+                    } else {
+                        story.push(`<p>${line}</p>`);
+                    }
+                } else {
+                    // Try to match questions and answers
+                    if (line.startsWith('1️⃣') || line.startsWith('2️⃣') || line.startsWith('3️⃣') || line.startsWith('4️⃣') || line.startsWith('5️⃣') || line.startsWith('6️⃣') || line.startsWith('🔹')) {
+                        if (qItem) qa.push(qItem);
+                        qItem = { q: line, a: [] };
+                    } else if (qItem) {
+                        qItem.a.push(line);
+                    }
+                }
+            }
+            if (qItem) qa.push(qItem);
+            return { story: story.join(''), qa: qa };
+        }
+
+        function parseMayaCase(rawText) {
+            const sections = rawText.split('\n');
+            let story = [];
+            let qa = [];
+            
+            let currentMode = 'story';
+            let qItem = null;
+            
+            for (let i = 0; i < sections.length; i++) {
+                const line = sections[i].trim();
+                if (!line) continue;
+                
+                if (line.includes('Part A：') || line.includes('Part B：') || line.includes('Part C：') || line.match(/^\d+\./)) {
+                    currentMode = 'qa';
+                }
+                
+                if (currentMode === 'story') {
+                    if (line.startsWith('Maya Case Study') || line.includes('Maya is a director') || line.includes('Maya leads') || line.includes('Maya is widely') || line.includes('Maya also notices') || line.includes('In one-on-one')) {
+                        story.push(`<p>${line}</p>`);
+                    }
+                } else {
+                    // Look for questions like "1. What do you see..." or headers
+                    if (line.match(/^\d+\./) || line.includes('Part ') || line.includes('Microskills Section')) {
+                        if (qItem) qa.push(qItem);
+                        qItem = { q: line, a: [] };
+                    } else if (qItem) {
+                        qItem.a.push(line);
+                    }
+                }
+            }
+            if (qItem) qa.push(qItem);
+            return { story: story.join(''), qa: qa };
+        }
+
+                // Initialize application on load
+        const CATEGORIES = {
+            1: "安全感與破冰 (Safety & Arrival)",
+            2: "自我臨在與連結 (Presence & Connection)",
+            3: "直覺偏見與反思 (Bias & Reflection)",
+            4: "教練對話與技能 (Coaching Skills)",
+            5: "整合與承諾 (Integration & Closing)"
+        };
+
+        let ALL_TOOLS = [];
+        let ALL_TAGS = [];
+        let activeCategory = 'all';
+        let activeTag = 'all';
+
+        window.onload = function() {
+            // Flatten all tools for unified filtering
+            TOOLKIT_DATA.forEach(day => {
+                if (day.tools && day.tools.length) {
+                    day.tools.forEach(tool => {
+                        ALL_TOOLS.push({
+                            ...tool,
+                            dayNum: day.num,
+                            categoryName: CATEGORIES[day.num] || "未分類"
+                        });
+                    });
+                }
+            });
+
+            // Extract unique tags/types
+            const tagSet = new Set();
+            ALL_TOOLS.forEach(tool => {
+                if (tool.type) tagSet.add(tool.type);
+            });
+            ALL_TAGS = Array.from(tagSet).sort();
+
+            // Render category and tag pills
+            renderFilterPills();
+
+            // Display all tools by default
+            filterTools();
+
+            // Parse and render Microsoft case
+            const msData = parseMicrosoftCase(MICROSOFT_CASE_RAW);
+            document.getElementById('microsoftStoryText').innerHTML = msData.story;
+            let msQAHtml = '';
+            msData.qa.forEach(item => {
+                msQAHtml += `
+                    <div class="qa-card" style="margin-bottom: 12px;">
+                        <div class="qa-question">❓ ${item.q}</div>
+                        <div class="qa-answer">${item.a.join('\n')}</div>
+                    </div>
+                `;
+            });
+            document.getElementById('microsoftQAPane').innerHTML = msQAHtml || '<p style="color:var(--text-secondary)">暫無解析問答</p>';
+
+            // Parse and render Maya case
+            const mayaData = parseMayaCase(MAYA_CASE_RAW);
+            document.getElementById('mayaStoryText').innerHTML = `<p>${MAYA_CASE_RAW.split('Part A：')[0].replace(/\n/g, '<br>')}</p>`;
+            let mayaQAHtml = '';
+            mayaData.qa.forEach(item => {
+                mayaQAHtml += `
+                    <div class="qa-card" style="margin-bottom: 12px;">
+                        <div class="qa-question" style="color: var(--primary);">❓ ${item.q}</div>
+                        <div class="qa-answer">${item.a.join('\n')}</div>
+                    </div>
+                `;
+            });
+            document.getElementById('mayaQAPane').innerHTML = mayaQAHtml || '<p style="color:var(--text-secondary)">暫無解析問答</p>';
+            
+            updatePlannerUI();
+        };
+
+        // Sidebar Collapse Logic
+        function toggleSidebar() {
+            document.body.classList.toggle('sidebar-open');
+            if (window.innerWidth >= 1024) {
+                document.body.classList.toggle('sidebar-collapsed');
+            }
+        }
+
+        // Cart Drawer Toggle Logic
+        function toggleCart() {
+            const drawer = document.getElementById('cartDrawer');
+            const overlay = document.getElementById('cartOverlay');
+            drawer.classList.toggle('open');
+            overlay.classList.toggle('open');
+        }
+
+        // Open Cart Drawer
+        function openCart() {
+            const drawer = document.getElementById('cartDrawer');
+            const overlay = document.getElementById('cartOverlay');
+            drawer.classList.add('open');
+            overlay.classList.add('open');
+        }
+
+        // Navigation Switching
+        function switchTab(tabName) {
+            // Update active menu item
+            document.querySelectorAll('.nav-item').forEach(item => {
+                item.classList.remove('active');
+            });
+            
+            // Highlight the clicked/selected nav item
+            const items = Array.from(document.querySelectorAll('.nav-item'));
+            const targetItem = items.find(item => {
+                const onclickStr = item.getAttribute('onclick');
+                return onclickStr && onclickStr.includes(`'${tabName}'`);
+            });
+            if (targetItem) targetItem.classList.add('active');
+
+            // Hide all tab contents
+            document.querySelectorAll('.tab-content').forEach(content => {
+                content.classList.remove('active');
+            });
+
+            // Show active tab
+            document.getElementById(`tab-${tabName}`).classList.add('active');
+
+            // Update title & description
+            const pageTitle = document.getElementById('pageTitle');
+            const pageDesc = document.getElementById('pageDescription');
+
+            if (tabName === 'toolkit') {
+                pageTitle.textContent = "情緒敏捷工具庫";
+                pageDesc.textContent = "瀏覽完整的 Emotional Agility (EA) 引導工具，利用標籤與搜尋快速挑選適合的工具加入大綱，隨時點擊右下角購物車展開規劃與匯出。";
+            } else if (tabName === 'case-microsoft') {
+                pageTitle.textContent = "案例：微軟文化轉型";
+                pageDesc.textContent = "適用於團隊層面的文化變革、直覺偏見與「在當下以不同方式回應情緒防衛」的引導訓練。";
+            } else if (tabName === 'case-maya') {
+                pageTitle.textContent = "案例：Maya 領導挑戰";
+                pageDesc.textContent = "探討高壓之下的領導人「吸收壓力卻不向下傳遞」所造成的團隊集體沉默，深入引導個體與團隊的修復。";
+            }
+            
+            // Close dropdown just in case
+            document.getElementById('templateDropdown').style.display = 'none';
+
+            // Close sidebar on mobile
+            if (window.innerWidth < 1024) {
+                document.body.classList.remove('sidebar-open');
+            }
+        }
+
+        // Dropdown toggle
+        function toggleDropdown() {
+            const dd = document.getElementById('templateDropdown');
+            dd.style.display = dd.style.display === 'flex' ? 'none' : 'flex';
+            event.stopPropagation();
+        }
+
+        // Close dropdown when clicking outside
+        window.onclick = function() {
+            document.getElementById('templateDropdown').style.display = 'none';
+        }
+
+        // Filter Pills Rendering
+        function renderFilterPills() {
+            // Render Categories
+            const catContainer = document.getElementById('categoryFilterPills');
+            let catHtml = `<button class="filter-pill ${activeCategory === 'all' ? 'active' : ''}" onclick="selectCategory('all')">全部主題</button>`;
+            for (let key in CATEGORIES) {
+                catHtml += `<button class="filter-pill ${activeCategory === key ? 'active' : ''}" onclick="selectCategory('${key}')">${CATEGORIES[key]}</button>`;
+            }
+            catContainer.innerHTML = catHtml;
+
+            // Render Tags
+            const tagContainer = document.getElementById('tagFilterPills');
+            let tagHtml = `<button class="filter-pill ${activeTag === 'all' ? 'active' : ''}" onclick="selectTag('all')">全部標籤</button>`;
+            ALL_TAGS.forEach(tag => {
+                tagHtml += `<button class="filter-pill ${activeTag === tag ? 'active' : ''}" onclick="selectTag('${tag}')">${tag}</button>`;
+            });
+            tagContainer.innerHTML = tagHtml;
+        }
+
+        function selectCategory(cat) {
+            activeCategory = cat;
+            renderFilterPills();
+            filterTools();
+            
+            // Handle overview card display
+            const overviewCard = document.getElementById('categoryOverviewCard');
+            if (cat === 'all') {
+                overviewCard.style.display = 'none';
+            } else {
+                const dayNum = parseInt(cat);
+                const dayData = TOOLKIT_DATA.find(d => d.num === dayNum);
+                if (dayData) {
+                    document.getElementById('categoryTitle').textContent = `${CATEGORIES[dayNum]}`;
+                    document.getElementById('categoryOverview').innerHTML = dayData.overview.join('<br>');
+                    overviewCard.style.display = 'block';
+                } else {
+                    overviewCard.style.display = 'none';
+                }
+            }
+        }
+
+        function selectTag(tag) {
+            activeTag = tag;
+            renderFilterPills();
+            filterTools();
+        }
+
+        // Tool Filtering Logic
+        function filterTools() {
+            const query = document.getElementById('toolSearchInput').value.toLowerCase().trim();
+
+            const filtered = ALL_TOOLS.filter(tool => {
+                // Category Filter
+                if (activeCategory !== 'all' && tool.dayNum !== parseInt(activeCategory)) {
+                    return false;
+                }
+                // Tag Filter
+                if (activeTag !== 'all' && tool.type !== activeTag) {
+                    return false;
+                }
+                // Search Query Filter
+                if (query) {
+                    const nameMatch = tool.name.toLowerCase().includes(query);
+                    const typeMatch = tool.type && tool.type.toLowerCase().includes(query);
+                    const purposeMatch = tool.purpose && tool.purpose.some(p => p.toLowerCase().includes(query));
+                    const processMatch = tool.process && tool.process.some(p => p.toLowerCase().includes(query));
+                    const tipsMatch = tool.tips && tool.tips.some(t => t.toLowerCase().includes(query));
+                    const insightsMatch = tool.insights && tool.insights.some(i => i.toLowerCase().includes(query));
+                    const debriefMatch = tool.debrief && tool.debrief.some(d => d.toLowerCase().includes(query));
+                    return nameMatch || typeMatch || purposeMatch || processMatch || tipsMatch || insightsMatch || debriefMatch;
+                }
+                return true;
+            });
+
+            renderToolsList(filtered);
+        }
+
+        // Render tool list
+        function renderToolsList(tools) {
+            const toolsList = document.getElementById('toolsList');
+            toolsList.innerHTML = '';
+
+            if (tools.length === 0) {
+                toolsList.innerHTML = `
+                    <div class="no-results" style="grid-column: span 2;">
+                        <span style="font-size: 32px;">🔍</span>
+                        <p style="margin-top: 10px; font-weight:600;">找不到符合篩選條件的引導工具</p>
+                        <p style="font-size: 13px; color: var(--text-secondary); margin-top: 5px;">請嘗試更換關鍵字或清除篩選標籤</p>
+                    </div>
+                `;
+                return;
+            }
+
+            tools.forEach(tool => {
+                const toolId = `day-${tool.dayNum}-tool-${tool.num}`;
+                let bodyHtml = '';
+
+                if (tool.purpose && tool.purpose.length) {
+                    bodyHtml += `
+                        <div class="tool-section">
+                            <div class="tool-section-title">🎯 活動目的</div>
+                            <div class="tool-section-content">
+                                <ul>${tool.purpose.map(p => `<li>${p}</li>`).join('')}</ul>
+                            </div>
+                        </div>
+                    `;
+                }
+                
+                if (tool.process && tool.process.length) {
+                    bodyHtml += `
+                        <div class="tool-section">
+                            <div class="tool-section-title">🧭 執行流程</div>
+                            <div class="tool-section-content">
+                                <ul>${tool.process.map(p => `<li>${p}</li>`).join('')}</ul>
+                            </div>
+                        </div>
+                    `;
+                }
+
+                if (tool.tips && tool.tips.length) {
+                    bodyHtml += `
+                        <div class="tool-section">
+                            <div class="tool-section-title">💡 引導重點</div>
+                            <div class="tool-section-content">
+                                <ul>${tool.tips.map(p => `<li>${p}</li>`).join('')}</ul>
+                            </div>
+                        </div>
+                    `;
+                }
+
+                if (tool.insights && tool.insights.length) {
+                    bodyHtml += `
+                        <div class="tool-section">
+                            <div class="tool-section-title">👁️ 學習洞察</div>
+                            <div class="tool-section-content">
+                                <ul>${tool.insights.map(p => `<li>${p}</li>`).join('')}</ul>
+                            </div>
+                        </div>
+                    `;
+                }
+
+                if (tool.debrief && tool.debrief.length) {
+                    bodyHtml += `
+                        <div class="tool-section" style="grid-column: span 2;">
+                            <div class="tool-section-title">❓ Debrief 關鍵提問</div>
+                            <div class="tool-section-content" style="color: var(--secondary);">
+                                <ul>${tool.debrief.map(p => `<li>${p}</li>`).join('')}</ul>
+                            </div>
+                        </div>
+                    `;
+                }
+
+                const card = document.createElement('div');
+                card.className = 'tool-card';
+                card.innerHTML = `
+                    <div class="tool-card-header">
+                        <div class="tool-title-wrap">
+                            <span class="tool-badge">類別: ${tool.categoryName.split(' ')[0]}</span>
+                            <h4 class="tool-name">${tool.name}</h4>
+                        </div>
+                        <span class="tool-type">${tool.type || '體驗工具'}</span>
+                    </div>
+                    <div class="tool-body" style="${tool.debrief && tool.debrief.length ? 'grid-template-columns: 1fr 1fr;' : ''}">
+                        ${bodyHtml}
+                    </div>
+                    <div class="tool-action-bar">
+                        <span style="font-size:12px; color:var(--text-secondary);">預計配時：</span>
+                        <select id="dur-${toolId}" class="duration-select">
+                            <option value="5">5 分鐘</option>
+                            <option value="10" selected>10 分鐘</option>
+                            <option value="15">15 分鐘</option>
+                            <option value="20">20 分鐘</option>
+                            <option value="30">30 分鐘</option>
+                            <option value="45">45 分鐘</option>
+                            <option value="60">60 分鐘</option>
+                        </select>
+                        <button class="btn-add" onclick="addToolToPlanner(${tool.dayNum}, ${tool.num})">🛒 加入挑選清單</button>
+                    </div>
+                `;
+                toolsList.appendChild(card);
+            });
+        }
+
+        // Add Tool to Planner (Cart)
+        function addToolToPlanner(dayNum, toolNum) {
+            const dayData = TOOLKIT_DATA.find(d => d.num === dayNum);
+            const tool = dayData.tools.find(t => t.num === toolNum);
+            const toolId = `day-${dayNum}-tool-${toolNum}`;
+            
+            const durationSelect = document.getElementById(`dur-${toolId}`);
+            const duration = parseInt(durationSelect.value);
+
+            // Avoid duplicate items
+            if (plannerItems.some(item => item.id === toolId)) {
+                showToast(`「${tool.name}」已經在購物車中囉！`);
+                openCart();
+                return;
+            }
+
+            plannerItems.push({
+                id: toolId,
+                name: tool.name,
+                dayNum: dayNum,
+                toolNum: toolNum,
+                type: tool.type || '體驗工具',
+                duration: duration,
+                custom: false,
+                notes: ""
+            });
+
+            showToast(`已成功將「${tool.name}」加入購物車 (${duration}分鐘)`);
+            updatePlannerUI();
+            
+            // FAB Animation
+            const fab = document.getElementById('cartFab');
+            fab.style.transform = 'scale(1.2) rotate(-10deg)';
+            setTimeout(() => { fab.style.transform = ''; }, 300);
+        }
+
+        // Add Case study to Planner
+        function addCaseToPlanner(caseType) {
+            const durationSelect = document.getElementById(`${caseType}CaseDuration`);
+            const duration = parseInt(durationSelect.value);
+            
+            const caseName = caseType === 'microsoft' ? '案例探討：微軟的文化轉型' : '案例探討：Maya 領導挑戰與系統壓力';
+            
+            plannerItems.push({
+                id: `case-${caseType}-${Date.now()}`,
+                name: caseName,
+                dayNum: caseType === 'microsoft' ? 4 : 3, // map to category theme
+                toolNum: 0,
+                type: '案例探討',
+                duration: duration,
+                custom: false,
+                notes: ""
+            });
+
+            showToast(`已成功將「${caseName}」加入購物車 (${duration}分鐘)`);
+            updatePlannerUI();
+
+            // FAB Animation
+            const fab = document.getElementById('cartFab');
+            fab.style.transform = 'scale(1.2) rotate(-10deg)';
+            setTimeout(() => { fab.style.transform = ''; }, 300);
+        }
+
+        // Add Custom Block
+        function addCustomBlock() {
+            const nameInput = document.getElementById('customBlockName');
+            const durationInput = document.getElementById('customBlockDuration');
+            
+            const name = nameInput.value.trim() || '自訂活動區塊';
+            const duration = parseInt(durationInput.value) || 10;
+
+            plannerItems.push({
+                id: `custom-${Date.now()}`,
+                name: name,
+                dayNum: 0,
+                toolNum: 0,
+                type: '自訂元件',
+                duration: duration,
+                custom: true,
+                notes: ""
+            });
+
+            nameInput.value = '';
+            showToast(`已新增自訂區塊「${name}」`);
+            updatePlannerUI();
+        }
+
+        // Remove item from Planner
+        function removePlannerItem(idx) {
+            plannerItems.splice(idx, 1);
+            updatePlannerUI();
+        }
+
+        // Reorder items
+        function moveItem(idx, direction) {
+            if (direction === 'up' && idx > 0) {
+                const temp = plannerItems[idx];
+                plannerItems[idx] = plannerItems[idx - 1];
+                plannerItems[idx - 1] = temp;
+            } else if (direction === 'down' && idx < plannerItems.length - 1) {
+                const temp = plannerItems[idx];
+                plannerItems[idx] = plannerItems[idx + 1];
+                plannerItems[idx + 1] = temp;
+            }
+            updatePlannerUI();
+        }
+
+        // Update item duration
+        function updateItemDuration(idx, newDuration) {
+            plannerItems[idx].duration = parseInt(newDuration) || 5;
+            updatePlannerUI(true); // skip re-render of list to avoid losing focus
+        }
+
+        // Update item notes
+        function updateItemNotes(idx, text) {
+            plannerItems[idx].notes = text;
+        }
+
+        // Clear Planner
+        function clearPlanner() {
+            if (confirm("您確定要清除目前購物車的所有內容嗎？")) {
+                plannerItems = [];
+                updatePlannerUI();
+            }
+        }
+
+        // Toast message
+        function showToast(msg) {
+            const toast = document.getElementById('toast');
+            toast.textContent = msg;
+            toast.style.display = 'block';
+            setTimeout(() => {
+                toast.style.display = 'none';
+            }, 2500);
+        }
+
+        // Update planner stats & list
+        function updatePlannerUI(skipItemsRender = false) {
+            let totalTime = 0;
+            let dayCounts = [0, 0, 0, 0, 0, 0];
+            
+            plannerItems.forEach(item => {
+                totalTime += item.duration;
+                if (item.dayNum >= 1 && item.dayNum <= 5) {
+                    dayCounts[item.dayNum]++;
+                }
+            });
+
+            // Update stats
+            document.getElementById('totalTimeLabel').textContent = `${totalTime} min`;
+            
+            // Update Cart Badge
+            const badge = document.getElementById('cartBadge');
+            if (plannerItems.length > 0) {
+                badge.textContent = plannerItems.length;
+                badge.style.display = 'flex';
+            } else {
+                badge.style.display = 'none';
+            }
+
+            // Update balance meters
+            for (let i = 1; i <= 5; i++) {
+                document.getElementById(`meter-cnt-${i}`).textContent = dayCounts[i];
+                const fillWidth = Math.min(100, (dayCounts[i] / 5) * 100);
+                document.getElementById(`meter-fill-${i}`).style.width = `${fillWidth}%`;
+            }
+
+            // Render list if not skipped
+            if (!skipItemsRender) {
+                renderPlannerItems();
+            }
+        }
+
+        function renderPlannerItems() {
+            const list = document.getElementById('plannerItemsList');
+            const emptyState = document.getElementById('plannerEmptyState');
+
+            if (plannerItems.length === 0) {
+                list.style.display = 'none';
+                emptyState.style.display = 'flex';
+                return;
+            }
+
+            list.style.display = 'flex';
+            emptyState.style.display = 'none';
+            list.innerHTML = '';
+
+            plannerItems.forEach((item, idx) => {
+                const card = document.createElement('div');
+                card.className = 'planner-item-card';
+                
+                let sourceLabel = item.dayNum > 0 ? `類別: ${CATEGORIES[item.dayNum].split(' ')[0]}` : '自訂元件';
+                if (item.type === '案例探討') sourceLabel = `案例研究 (${CATEGORIES[item.dayNum].split(' ')[0]})`;
+
+                card.innerHTML = `
+                    <div class="planner-item-left">
+                        <div class="reorder-btns">
+                            <button class="btn-order" onclick="moveItem(${idx}, 'up')" ${idx === 0 ? 'disabled' : ''}>▲</button>
+                            <button class="btn-order" onclick="moveItem(${idx}, 'down')" ${idx === plannerItems.length - 1 ? 'disabled' : ''}>▼</button>
+                        </div>
+                        <div class="planner-item-info">
+                            <div class="planner-item-name" style="font-size: 14px;">${item.name}</div>
+                            <div class="planner-item-tag">
+                                <span class="planner-item-type">${item.type}</span>
+                                <span>|</span>
+                                <span>${sourceLabel}</span>
+                            </div>
+                            <input type="text" class="custom-block-input" style="padding: 6px; font-size: 11px; margin-top:8px; width: 100%; border-color: rgba(226, 232, 240, 0.6);" placeholder="填寫教學備註或引導重點..." value="${item.notes}" oninput="updateItemNotes(${idx}, this.value)">
+                        </div>
+                    </div>
+                    <div class="planner-item-right">
+                        <input type="number" class="planner-duration-input" value="${item.duration}" min="1" max="180" oninput="updateItemDuration(${idx}, this.value)">
+                        <span style="font-size:12px; color:var(--text-secondary);">分</span>
+                        <button class="btn-delete" onclick="removePlannerItem(${idx})">🗑️</button>
+                    </div>
+                `;
+                list.appendChild(card);
+            });
+        }
+
+        // Load Syllabus templates (bundles)
+        function loadTemplate(tplName) {
+            plannerItems = [];
+            
+            if (tplName === 'leadership') {
+                plannerItems = [
+                    { id: 'tpl-1', name: '暖場與心理安全說明 (Door Greeting & Safety Intro)', dayNum: 1, toolNum: 0, type: '自訂元件', duration: 15, custom: true, notes: "引言與心理安全感建立" },
+                    { id: 'tpl-2', name: '課前身份歌曲破冰 (Pre-Event Identity Song Sharing)', dayNum: 1, toolNum: 1, type: '課前準備', duration: 15, custom: false, notes: "歌曲背景故事自我分享與情感連結" },
+                    { id: 'tpl-3', name: '直覺偏見體驗 (Hook Bias Exercise)', dayNum: 3, toolNum: 1, type: '偏見覺察', duration: 25, custom: false, notes: "快速批評與自動導航偏見體驗" },
+                    { id: 'tpl-4', name: 'I Am 自我標籤與信念外化 (I Am Label)', dayNum: 2, toolNum: 1, type: '自我覺察', duration: 25, custom: false, notes: "寫下並貼上自我限縮型敘事標籤" },
+                    { id: 'tpl-5', name: '案例分析：Maya 領導挑戰與系統壓力 (Maya Case)', dayNum: 3, toolNum: 0, type: '案例探討', duration: 35, custom: false, notes: "高壓之下領導人吸壓對團隊造成的安靜效應" },
+                    { id: 'tpl-6', name: '強而有力提問與教練實作 (Powerful Question Wall & Practice)', dayNum: 4, toolNum: 2, type: '提問語言', duration: 40, custom: false, notes: "好奇、同理與勇氣之提問與三人小組教練對話" },
+                    { id: 'tpl-7', name: '收尾與行動承諾 (Future Self Postcard)', dayNum: 5, toolNum: 4, type: '學習轉化', duration: 25, custom: false, notes: "書寫給未來自己明信片，強化行動承諾" }
+                ];
+            } else if (tplName === 'team-communication') {
+                plannerItems = [
+                    { id: 'tpl-1', name: '引言與開場問題反思 (Opening Question Reflection)', dayNum: 1, toolNum: 6, type: '個人反思', duration: 20, custom: false, notes: "引導 Think-Write-Share 團隊對話挑戰" },
+                    { id: 'tpl-2', name: '1-2-3 專注力與傾聽遊戲 (1-2-3 Listening Game)', dayNum: 2, toolNum: 3, type: '專注與同步', duration: 15, custom: false, notes: "在錯誤與律動中體驗專注與聆聽" },
+                    { id: 'tpl-3', name: '觀察與腦補實驗 (Observation vs Interpretation)', dayNum: 4, toolNum: 1, type: '認知覺察', duration: 30, custom: false, notes: "釐清事實與腦補推測的鴻溝" },
+                    { id: 'tpl-4', name: '案例討論：微軟的文化轉型案例 (Microsoft Case)', dayNum: 4, toolNum: 0, type: '案例探討', duration: 30, custom: false, notes: "研討現場衝突，分析情緒訊號與溝通盲區" },
+                    { id: 'tpl-5', name: '在當下說出口的能力：Speakable Line 現場演練', dayNum: 4, toolNum: 0, type: '自訂元件', duration: 25, custom: true, notes: "如何得體地將隱藏的觀察與張力說出口" },
+                    { id: 'tpl-6', name: '三人教練對話實作 (Coaching Practicum)', dayNum: 4, toolNum: 3, type: '技能實作', duration: 40, custom: false, notes: "實作練習，熟悉 Curiosity, Compassion, Courage 品質" },
+                    { id: 'tpl-7', name: '大腦收斂與互助牆 (Integration & ASK Wall)', dayNum: 5, toolNum: 3, type: '社群連結', duration: 20, custom: false, notes: "互助牆 (ASK & Give) 架設，延續合作" }
+                ];
+            } else if (tplName === 'personal-reflection') {
+                plannerItems = [
+                    { id: 'tpl-1', name: '到場沉靜與感官覺察儀式 (Sensory Awareness & Arrival)', dayNum: 1, toolNum: 10, type: '感官體驗', duration: 15, custom: false, notes: "葉片搓揉嗅聞，轉化心境" },
+                    { id: 'tpl-2', name: '工作本開場儀式與期待 (Workbook Opening & 5-Words)', dayNum: 1, toolNum: 8, type: '學習轉換', duration: 15, custom: false, notes: "引發期待，開啟共同儀式感" },
+                    { id: 'tpl-3', name: '自我標籤與敘事拆解 (I Am Label)', dayNum: 2, toolNum: 1, type: '自我覺察', duration: 30, custom: false, notes: "深探自我信念如何限縮生活反應" },
+                    { id: 'tpl-4', name: '呼吸冥想與教練狀態建立 (Centering Practice)', dayNum: 4, toolNum: 4, type: '教練狀態', duration: 20, custom: false, notes: "呼吸與身體掃描，回歸當下" },
+                    { id: 'tpl-5', name: '第三人稱自由書寫 (Free Writing)', dayNum: 3, toolNum: 4, type: '反思書寫', duration: 35, custom: false, notes: "以客觀第三人稱視角書寫個人阻礙，拉開心理距離" },
+                    { id: 'tpl-6', name: '圓圈平等對話 (Circle Dialogue)', dayNum: 3, toolNum: 2, type: '群體對話', duration: 40, custom: false, notes: "無結構、無評價的集體聆聽與深度分享" },
+                    { id: 'tpl-7', name: '未來自己明信片撰寫 (Future Self Postcard)', dayNum: 5, toolNum: 4, type: '學習轉化', duration: 25, custom: false, notes: "向未來自己投遞一封錨定內在價值的信" }
+                ];
+            }
+
+            showToast(`已成功載入主題推薦套裝！`);
+            updatePlannerUI();
+            openCart();
+        }
+
+        // Export Syllabus logic
+        function exportSyllabus() {
+            if (plannerItems.length === 0) {
+                alert("您的挑選清單中沒有任何活動！");
+                return;
+            }
+
+            let md = `# Emotional Agility (EA) 精選引導工具與教案大綱\n\n`;
+            md += `此清單由「EA 情緒敏捷引導庫」依據完整培訓紀錄與案例庫挑選生成。\n\n`;
+            md += `* **累計估計時數**：${plannerItems.reduce((acc, i) => acc + i.duration, 0)} 分鐘\n`;
+            md += `* **挑選工具組合**：\n\n`;
+            md += `| 順序 | 估計時間 (分鐘) | 活動 / 道具名稱 | 分類 / 來源 | 教學備註與引導重點 |\n`;
+            md += `| :---: | :---: | :--- | :--- | :--- |\n`;
+
+            plannerItems.forEach((item, idx) => {
+                let source = item.dayNum > 0 ? `${CATEGORIES[item.dayNum].split(' ')[0]}` : `自訂元件`;
+                if (item.type === '案例探討') source = `案例討論 (${CATEGORIES[item.dayNum].split(' ')[0]})`;
+                const notes = item.notes ? item.notes.replace(/\|/g, '\\|') : "無備註";
+                md += `| ${idx + 1} | ${item.duration}m | ${item.name} | ${item.type} (${source}) | ${notes} |\n`;
+            });
+
+            md += `\n\n## 💡 執行提醒：\n`;
+            md += `1. **心理安全感優先**：在進行任何「I Am Label」或「三人教練實作」前，請務必確認「開場問題反思」已經營造出彼此信任的氛圍。\n`;
+            md += `2. **情緒作為數據**：課程中若有學員產生較強烈的情緒起伏，請溫和引導其「將情緒視為數據（Data）而非指令（Directives）」，用第三人稱視角拉開心理距離進行觀察。\n`;
+            md += `3. **彈性搭配**：此清單為您的專屬教案口袋庫。實際授課時可依據團體能量與進度，彈性增刪或挪移活動。\n`;
+
+            document.getElementById('exportTextarea').value = md;
+            document.getElementById('exportModal').classList.add('active');
+        }
+
+        function closeModal() {
+            document.getElementById('exportModal').classList.remove('active');
+        }
+
+        function copySyllabusText() {
+            const textarea = document.getElementById('exportTextarea');
+            textarea.select();
+            document.execCommand('copy');
+            showToast("成功複製清單 Markdown 內容！");
+            closeModal();
+        }
+</script>
+</body>
+</html>

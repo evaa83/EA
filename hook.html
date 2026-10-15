@@ -1011,9 +1011,124 @@
             opacity: 1;
             pointer-events: auto;
         }
+
+        /* High-quality print styles for PDF generation */
+        @media print {
+            body {
+                background: #ffffff !important;
+                color: #000000 !important;
+                padding: 0 !important;
+                margin: 0 !important;
+                display: block !important;
+                overflow: visible !important;
+                -webkit-print-color-adjust: exact !important;
+                print-color-adjust: exact !important;
+            }
+            #password-gate {
+                display: none !important;
+            }
+            .presentation-wrapper {
+                border: none !important;
+                box-shadow: none !important;
+                max-width: none !important;
+                width: 100% !important;
+                height: auto !important;
+                aspect-ratio: auto !important;
+                display: block !important;
+                overflow: visible !important;
+                background: #ffffff !important;
+            }
+            .slides-viewport {
+                display: block !important;
+                height: auto !important;
+                overflow: visible !important;
+            }
+            .slide-section {
+                position: relative !important;
+                top: auto !important;
+                left: auto !important;
+                width: 100% !important;
+                height: 100vh !important;
+                aspect-ratio: 16 / 9 !important;
+                opacity: 1 !important;
+                pointer-events: auto !important;
+                transform: none !important;
+                display: flex !important;
+                flex-direction: column !important;
+                justify-content: space-between !important;
+                page-break-after: always !important;
+                break-after: page !important;
+                overflow: hidden !important;
+                padding: 40px 48px !important;
+                box-sizing: border-box !important;
+                margin: 0 !important;
+                background: #ffffff !important;
+            }
+            .slide2-hide-initially {
+                opacity: 1 !important;
+                pointer-events: auto !important;
+            }
+            /* Reveal all progressive overlays */
+            [id^="reveal-overlay-"] {
+                display: none !important;
+            }
+            [id^="reveal-content-"] {
+                filter: none !important;
+                pointer-events: auto !important;
+            }
+            /* Hide print-unfriendly interface elements */
+            .nav-control-panel, .autosave-badge, .btn, .btn-outline, .btn-orange, .autosave-badge {
+                display: none !important;
+            }
+        }
 </style>
 </head>
 <body>
+
+    <!-- Login Protection Overlay -->
+    <div id="password-gate" style="position: fixed; top: 0; left: 0; right: 0; bottom: 0; background-color: #0b0f19; display: flex; align-items: center; justify-content: center; z-index: 99999; transition: opacity 0.3s ease; font-family: system-ui, -apple-system, sans-serif;">
+        <div style="background-color: #111827; border: 1px solid #1f2937; border-radius: 16px; padding: 32px; max-width: 380px; width: 100%; margin: 16px; text-align: center; box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.5); color: #f3f4f6;">
+            <div style="font-size: 40px; margin-bottom: 16px;">🔑</div>
+            <h2 style="font-size: 20px; font-weight: bold; margin-bottom: 8px; color: #ffffff;">請登入存取工作坊</h2>
+            <p style="color: #9ca3af; font-size: 13px; line-height: 1.5; margin-bottom: 24px;">本專案受帳號密碼保護，請輸入正確的帳號與密碼以進入工作坊網頁。</p>
+            <form id="password-form" onsubmit="handleGateSubmit(event)">
+                <input type="text" id="gate-username-input" style="width: 100%; box-sizing: border-box; padding: 12px; background-color: #1f2937; border: 1px solid #374151; border-radius: 8px; color: #ffffff; text-align: center; font-size: 14px; outline: none; margin-bottom: 12px; transition: border-color 0.2s;" placeholder="請輸入帳號" required autofocus autocomplete="username">
+                <input type="password" id="gate-password-input" style="width: 100%; box-sizing: border-box; padding: 12px; background-color: #1f2937; border: 1px solid #374151; border-radius: 8px; color: #ffffff; text-align: center; font-size: 14px; outline: none; margin-bottom: 16px; transition: border-color 0.2s;" placeholder="請輸入密碼" required autocomplete="current-password">
+                <button type="submit" style="width: 100%; padding: 12px; background-color: #f59e0b; border: none; border-radius: 8px; color: #0b0f19; font-weight: bold; font-size: 14px; cursor: pointer; transition: background-color 0.2s;">確認進入</button>
+            </form>
+            <p id="gate-error-msg" style="color: #ef4444; font-size: 12px; margin-top: 12px; height: 16px; opacity: 0; transition: opacity 0.2s; margin-bottom: 0;">帳號或密碼錯誤，請重試！</p>
+        </div>
+    </div>
+    
+    <script>
+        (function() {
+            if (sessionStorage.getItem('ea_hook_unlocked_konya') === 'true') {
+                document.getElementById('password-gate').style.display = 'none';
+            }
+        })();
+
+        function handleGateSubmit(e) {
+            e.preventDefault();
+            const username = document.getElementById('gate-username-input').value.trim();
+            const password = document.getElementById('gate-password-input').value;
+            const errorMsg = document.getElementById('gate-error-msg');
+            
+            if (username === 'Konya' && password === 'Percy') {
+                sessionStorage.setItem('ea_hook_unlocked_konya', 'true');
+                const gate = document.getElementById('password-gate');
+                gate.style.opacity = '0';
+                setTimeout(() => {
+                    gate.style.display = 'none';
+                }, 300);
+            } else {
+                errorMsg.style.opacity = '1';
+                document.getElementById('gate-password-input').value = '';
+                setTimeout(() => {
+                    errorMsg.style.opacity = '0';
+                }, 3000);
+            }
+        }
+    </script>
 
     <!-- MAIN PRESENTATION SLIDESHOW -->
     <div class="presentation-wrapper">
@@ -1374,8 +1489,8 @@
                         </div>
 
                         <div style="text-align: center;">
-                            <button id="btnViewResult" class="btn btn-pink" style="padding: 14px 28px; width: 100%; font-size:15px;" onclick="goToSlide(11)" disabled>
-                                🔓 查看大家通常怎麼選 (完成填寫解鎖)
+                            <button id="btnViewResult" class="btn btn-pink" style="padding: 14px 28px; width: 100%; font-size:15px; cursor: pointer;" onclick="goToSlide(11)">
+                                🔓 查看大家通常怎麼選 (點擊進入下一頁揭曉)
                             </button>
                         </div>
                     </div>
@@ -2546,13 +2661,7 @@
 
             if (slideNum < 1 || slideNum > TOTAL_SLIDES) return;
 
-            // Page 10 locks check
-            if (slideNum === 11 && currentSlide === 10) {
-                if (!checkSlide10Completed()) {
-                    alert("請先完成本頁面中的書寫練習與信心評分，以解讀您的直覺結果。");
-                    return;
-                }
-            }
+            // Page 10 locks check - non-blocking to allow presentation and smooth navigation
 
             const currentEl = document.getElementById(`slide-${currentSlide}`);
             const nextEl = document.getElementById(`slide-${slideNum}`);
@@ -2726,8 +2835,7 @@
         function checkSlideUnlocks() {
             const btn = document.getElementById('btnViewResult');
             if (btn) {
-                const complete = checkSlide10Completed();
-                btn.disabled = !complete;
+                btn.disabled = false;
             }
 
             // Disable next/prev actions on boundaries
