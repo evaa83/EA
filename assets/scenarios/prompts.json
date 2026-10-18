@@ -1,0 +1,24 @@
+{
+  "method": "Built-in image_gen images; local AVFoundation video encoding; synthesized ambient audio; browser-rendered synchronized inner-voice captions.",
+  "format": {
+    "width": 1280,
+    "height": 720,
+    "fps": 24,
+    "seconds_per_video": 10,
+    "audio": "train-stove-immersive.mp4 and traffic-immersive.mp4 include synthesized stereo ambience"
+  },
+  "shared_constraints": "Photorealistic documentary style, first-person view, no people, hands, bodies, faces, photographer reflections, captions, logos or panels.",
+  "images": {
+    "train.png": "Seated passenger perspective inside a modern Taiwanese intercity train, looking diagonally through a large window at subtly motion-blurred countryside. Empty seat edge and window frame, natural daylight.",
+    "stove.png": "First-person memory looking down toward a gas stove in an ordinary Taiwanese home kitchen. Stainless steel pot on grate, clearly visible small blue gas flame underneath and slight steam. Normal cooking, no smoke or fire emergency.",
+    "sink.png": "First-person view looking down directly at a stainless steel kitchen sink overflowing with used dirty dishes. About twenty bowls and plates piled high in the basin and on draining boards, mugs, chopsticks and greasy frying pan, visible food scraps. Ordinary Taiwanese kitchen, neutral daylight.",
+    "sofa.png": "Standing first-person view from the entrance of a modest Taiwanese apartment living room. Sofa covered with casually tossed worn shirts, trousers and socks, cushions partly buried. Natural daylight and ordinary lived-in home.",
+    "traffic.png": "Photorealistic 16:9 first-person driver view inside a left-hand-drive car, stopped in dense Taiwanese city traffic. Dashboard and steering wheel edge, stationary cars and red brake lights immediately ahead, a close following car visible in the rearview mirror. No people, hands, bodies, faces, captions or readable plates."
+  },
+  "timeline": {
+    "train-stove.mp4": "0–4s train; 4–6.5s stove memory; 6.5–10s back to train",
+    "home-chores.mp4": "0–5s sink; 5–10s sofa",
+    "traffic-immersive.mp4": "10 seconds: stationary traffic, subtle camera push-in, synthesized idling traffic and repeated rear-car horns from 2s; timed inner-voice captions displayed by immersive.js."
+  },
+  "rebuild": "swift scripts/render-scenarios.swift assets/scenarios"
+}

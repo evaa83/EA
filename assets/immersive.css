@@ -1,0 +1,21 @@
+#slide-5 .immersive-experience, #slide-6 .immersive-experience { display: flex; flex-direction: column; align-items: center; justify-content: flex-start; }
+.immersive-launch { position: relative; display: block; width: min(100%, 960px); aspect-ratio: 16/9; padding: 0; border: 0; border-radius: 16px; overflow: hidden; cursor: pointer; background: #111; color: #fff; }
+.immersive-launch img { width: 100%; height: 100%; object-fit: cover; display: block; }
+.immersive-launch::after { content: ''; position: absolute; inset: 0; background: linear-gradient(transparent 45%, #000b); }
+.immersive-launch-label { position: absolute; bottom: 10%; left: 0; right: 0; z-index: 1; padding: 0 16px; font: 600 clamp(18px, 2vw, 26px)/1.5 'Noto Sans TC', sans-serif; text-align: center; }
+.immersive-launch:focus-visible, .immersive-dialog button:focus-visible { outline: 3px solid #fb923c; outline-offset: -4px; }
+.immersive-invitation { text-align: center; color: var(--text-muted); }
+.immersive-reflection { width: min(100%, 960px); display: grid; grid-template-columns: 1fr 1fr; gap: 24px; padding-top: 12px; }
+.immersive-reflection[hidden], .immersive-end[hidden] { display: none; }
+.immersive-dialog { position: fixed; inset: 0; margin: 0; padding: 0; border: 0; max-width: none; max-height: none; width: 100vw; height: 100dvh; background: #000; color: #fff; overflow: hidden; }
+.immersive-dialog::backdrop { background: #000; }
+.immersive-dialog:fullscreen { width: 100%; height: 100%; }
+.immersive-dialog video { width: 100%; height: 100%; object-fit: contain; display: block; }
+.immersive-caption { position: absolute; bottom: max(12%, 90px); left: 8%; right: 8%; text-align: center; color: white; font: 500 clamp(24px, 3vw, 48px)/1.6 'Noto Sans TC', sans-serif; text-shadow: 0 2px 5px #000, 0 2px 20px #000; white-space: pre-line; pointer-events: none; }
+.immersive-caption:not(:empty) { padding: 16px; background: radial-gradient(ellipse, #0009, transparent 75%); }
+.immersive-controls { position: absolute; top: max(20px, env(safe-area-inset-top)); right: 24px; display: flex; gap: 12px; }
+.immersive-dialog button { padding: 12px 20px; border: 1px solid #ffffff70; border-radius: 30px; background: #0009; color: #fff; font: 500 18px/1.5 'Noto Sans TC', sans-serif; cursor: pointer; }
+.immersive-end { position: absolute; inset: 0; background: #000c; display: flex; flex-direction: column; justify-content: center; align-items: center; gap: 24px; text-align: center; padding: 24px; }
+.immersive-end p { color: white; font-size: clamp(24px, 3vw, 40px); line-height: 1.7; }
+@media(max-width: 700px) { .immersive-reflection { grid-template-columns: 1fr; } .immersive-caption { left: 3%; right: 3%; } }
+@media print { .immersive-dialog { display: none; } #trainReflection[hidden], #trafficReflection[hidden] { display: grid; } }
