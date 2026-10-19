@@ -3,14 +3,14 @@
 .message-bubble { align-self: flex-start; background: #e1f5ea; padding: 24px 28px; border-radius: 22px 22px 22px 4px; font-size: clamp(26px, 3vw, 36px); font-weight: 700; line-height: 1.5; box-shadow: 0 4px 16px #00000008; }
 .message-kicker { color: var(--accent-green); font-weight: 700; }
 .message-fields { display: flex; flex-direction: column; gap: 18px; }
-.message-field { display: flex; flex-direction: column; gap: 8px; font-size: 18px; font-weight: 600; }
-.message-field textarea { font-weight: 400; min-height: 92px; font-size: 18px; }
-.message-note { color: var(--text-muted); font-size: 16px; line-height: 1.7; }
+.message-field { display: flex; flex-direction: column; gap: 8px; font-size: 23.4px; font-weight: 600; }
+.message-field textarea { font-weight: 400; min-height: 92px; font-size: 23.4px; }
+.message-note { color: var(--text-muted); font-size: 22px; line-height: 1.7; }
 .message-rules { padding-left: 1.5em; display: flex; flex-direction: column; gap: 12px; }
-.message-rules li { font-size: 18px; }
+.message-rules li { font-size: 23.4px; }
 .message-relay-review { display: flex; flex-direction: column; gap: 12px; }
-.message-relay-choice { width: 100%; text-align: left; white-space: pre-wrap; overflow-wrap: anywhere; font: inherit; font-size: 18px; line-height: 1.7; padding: 14px 18px; border: 1px solid #d6d3d1; border-radius: 12px; background: white; color: var(--text-main); cursor: pointer; }
+.message-relay-choice { width: 100%; text-align: left; white-space: pre-wrap; overflow-wrap: anywhere; font: inherit; font-size: 23.4px; line-height: 1.7; padding: 14px 18px; border: 1px solid #d6d3d1; border-radius: 12px; background: white; color: var(--text-main); cursor: pointer; }
 .message-relay-choice[aria-pressed="true"], #messageBoundaryUnsure[aria-pressed="true"] { border-color: var(--accent-orange); box-shadow: inset 0 0 0 1px var(--accent-orange); background: #fff7ed; }
 .message-relay-choice:focus-visible { outline: 3px solid var(--accent-orange); outline-offset: 2px; }
 .message-relay-choice:disabled { cursor: default; color: var(--text-muted); background: #f5f5f4; }
-.message-activity summary { font-size: 18px; cursor: pointer; }
+.message-activity summary { font-size: 23.4px; cursor: pointer; }

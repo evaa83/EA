@@ -1,0 +1,31 @@
+/* Comfortable reading on a projected or full-screen lesson. */
+body { font-size: 24px; }
+.slide-subtitle { line-height: 1.65; }
+.slide-title { line-height: 1.4; }
+.slide-header { gap: 20px; }
+.slide-section select,
+.slide-section input:not([type="checkbox"]):not([type="radio"]):not([type="range"]):not([type="hidden"]),
+.slide-section textarea {
+    font-family: inherit;
+    font-size: 24px !important;
+    line-height: 1.65;
+}
+.slide-section select { width: 100% !important; max-width: 100%; min-height: 54px; padding: 10px 14px; }
+.slide-section textarea { min-height: 140px; }
+.slide-section textarea::placeholder,
+.slide-section input::placeholder { color: #73716e; opacity: 1; }
+.slide-section .input-label { line-height: 1.6; }
+.slide-type-tag { white-space: nowrap; }
+.message-rules li { line-height: 1.7; }
+.message-note { font-size: 22px; }
+.immersive-launch-label { font-size: clamp(24px, 2.5vw, 32px); }
+.immersive-dialog button { font-size: 22px; }
+.slide-footer-watermark span { font-size: 18px !important; }
+@media (min-width: 1024px) {
+    .presentation-wrapper { max-width: 1600px; }
+    .slide-section { padding: 36px 44px; }
+}
+@media (max-width: 1023px) {
+    .slide-title { font-size: 32px; }
+    .slide-section select, .slide-section textarea { font-size: 22px !important; }
+}
